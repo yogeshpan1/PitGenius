@@ -104,6 +104,16 @@ simulator samples incident counts rather than binary SC/no-SC.
 simple fix. Count-based sampling captures multiple-SC races which binary
 sampling misses.
 
+## D14 — Fuel-load handling: linear proxy, not pseudo-precision
+**Decision:** Lap-time models include a linear fuel proxy of 0.033 s/lap
+decreasing from race start, applied identically across all models. No claim
+is made that this is a true fuel-mass correction.
+**Reasoning:** Fuel mass per lap is not public; the ~0.033 s/lap figure is the
+commonly cited order of magnitude. What matters for strategy comparisons is
+that the same correction is applied to every stint, so *relative* degradation
+between compounds/strategies is consistent. Claiming a fancier correction
+would be fake precision.
+
 ## D13 — Backtest protocol: leave-one-race-out within season + full-season holdout
 **Decision:** Degradation-model backtests report both (a) leave-one-race-out
 across all ingested races and (b) train-on-seasons-A/B → test-on-season-C.
