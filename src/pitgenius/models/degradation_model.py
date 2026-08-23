@@ -79,11 +79,11 @@ class TireDegradationModel:
 
     def _make_xy(self, df: pd.DataFrame):
         X = pd.DataFrame({
-            "tire_life": df["tire_life"],
+            "tire_life": df["tire_life"].astype(float),
             "fuel_proxy": df.get("fuel_proxy",
                                  pd.Series(0.0, index=df.index)),
-            "compound": df["tire_compound"],
-            "circuit": df["circuit"],
+            "compound": df["tire_compound"].astype("category"),
+            "circuit": df["circuit"].astype("category"),
         })
         y = df["delta"]
         return X, y
