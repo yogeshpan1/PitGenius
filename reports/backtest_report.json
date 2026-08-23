@@ -1,0 +1,2429 @@
+{
+  "protocol": "Simulator recommendations vs actual winner strategy; model trained only on prior seasons. All races reported.",
+  "n_races": 62,
+  "strategy_hits": 3,
+  "strategy_misses": 59,
+  "hit_rate": 0.04838709677419355,
+  "winner_pos_in_p10_p90_band": 0,
+  "band_rate": 0.0,
+  "per_race": [
+    {
+      "year": 2023,
+      "round": 1,
+      "winner": "VER",
+      "total_laps": 57,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.056666666666666664,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.016666666666666666,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.05333333333333334,
+          "p_podium": 0.14,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.056666666666666664,
+          "p_podium": 0.13333333333333333,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.03,
+          "p_podium": 0.14666666666666667,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.016666666666666666,
+          "p_podium": 0.09333333333333334,
+          "pos_p50": 14.0
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "round": 2,
+      "winner": "PER",
+      "total_laps": 50,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.04,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.04666666666666667,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.05,
+          "p_podium": 0.15333333333333332,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.04,
+          "p_podium": 0.13333333333333333,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.03,
+          "p_podium": 0.13,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.04666666666666667,
+          "p_podium": 0.13,
+          "pos_p50": 13.0
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "round": 3,
+      "winner": "VER",
+      "total_laps": 53,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.03666666666666667,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.013333333333333334,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.11333333333333333,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.05,
+          "p_podium": 0.1,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.12666666666666668,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.013333333333333334,
+          "p_podium": 0.10666666666666667,
+          "pos_p50": 14.0
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "round": 4,
+      "winner": "PER",
+      "total_laps": 51,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.04666666666666667,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.016666666666666666,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.05,
+          "p_podium": 0.12,
+          "pos_p50": 12.5
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.04666666666666667,
+          "p_podium": 0.16333333333333333,
+          "pos_p50": 11.5
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.056666666666666664,
+          "p_podium": 0.14333333333333334,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.016666666666666666,
+          "p_podium": 0.08333333333333333,
+          "pos_p50": 13.0
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "round": 5,
+      "winner": "VER",
+      "total_laps": 57,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.05,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.04,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.03,
+          "p_podium": 0.10333333333333333,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.03,
+          "p_podium": 0.13333333333333333,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.05,
+          "p_podium": 0.13333333333333333,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.04,
+          "p_podium": 0.12666666666666668,
+          "pos_p50": 13.5
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "round": 6,
+      "winner": "VER",
+      "total_laps": 78,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.056666666666666664,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.043333333333333335,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.03,
+          "p_podium": 0.09333333333333334,
+          "pos_p50": 14.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.056666666666666664,
+          "p_podium": 0.16333333333333333,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.05333333333333334,
+          "p_podium": 0.13666666666666666,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.12333333333333334,
+          "pos_p50": 14.0
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "round": 7,
+      "winner": "VER",
+      "total_laps": 66,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.06333333333333334,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.02666666666666667,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.04,
+          "p_podium": 0.10666666666666667,
+          "pos_p50": 14.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.06333333333333334,
+          "p_podium": 0.14,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.10666666666666667,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.02666666666666667,
+          "p_podium": 0.08333333333333333,
+          "pos_p50": 13.0
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "round": 8,
+      "winner": "VER",
+      "total_laps": 70,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.056666666666666664,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.03,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.13666666666666666,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.056666666666666664,
+          "p_podium": 0.15,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.04,
+          "p_podium": 0.12333333333333334,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.03,
+          "p_podium": 0.09666666666666666,
+          "pos_p50": 14.0
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "round": 9,
+      "winner": "VER",
+      "total_laps": 71,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.07,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.0,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.03,
+          "p_podium": 0.11,
+          "pos_p50": 11.5
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.05,
+          "p_podium": 0.15333333333333332,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.07,
+          "p_podium": 0.18,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.0,
+          "p_podium": 0.023333333333333334,
+          "pos_p50": 19.0
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "round": 10,
+      "winner": "VER",
+      "total_laps": 52,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.08,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.04,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.04666666666666667,
+          "p_podium": 0.12666666666666668,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.04666666666666667,
+          "p_podium": 0.11666666666666667,
+          "pos_p50": 12.5
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.08,
+          "p_podium": 0.15,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.04,
+          "p_podium": 0.12666666666666668,
+          "pos_p50": 12.0
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "round": 11,
+      "winner": "VER",
+      "total_laps": 70,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.056666666666666664,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.03,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.03333333333333333,
+          "p_podium": 0.13666666666666666,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.056666666666666664,
+          "p_podium": 0.13666666666666666,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.11666666666666667,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.03,
+          "p_podium": 0.09666666666666666,
+          "pos_p50": 14.0
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "round": 12,
+      "winner": "VER",
+      "total_laps": 44,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.043333333333333335,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.013333333333333334,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.13333333333333333,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.14,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.06,
+          "p_podium": 0.13,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.013333333333333334,
+          "p_podium": 0.08333333333333333,
+          "pos_p50": 14.0
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "round": 13,
+      "winner": "VER",
+      "total_laps": 72,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.03666666666666667,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.0,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.03333333333333333,
+          "p_podium": 0.10333333333333333,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.12,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.06,
+          "p_podium": 0.15666666666666668,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.0,
+          "p_podium": 0.013333333333333334,
+          "pos_p50": 21.0
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "round": 14,
+      "winner": "VER",
+      "total_laps": 51,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.03666666666666667,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.03333333333333333,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.06333333333333334,
+          "p_podium": 0.12,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.05,
+          "p_podium": 0.15666666666666668,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.12333333333333334,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.03333333333333333,
+          "p_podium": 0.10333333333333333,
+          "pos_p50": 13.0
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "round": 15,
+      "winner": "SAI",
+      "total_laps": 62,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.06333333333333334,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.02666666666666667,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.04,
+          "p_podium": 0.14,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.05,
+          "p_podium": 0.13666666666666666,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.06333333333333334,
+          "p_podium": 0.13666666666666666,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.02666666666666667,
+          "p_podium": 0.10333333333333333,
+          "pos_p50": 12.0
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "round": 16,
+      "winner": "VER",
+      "total_laps": 53,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.05333333333333334,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.013333333333333334,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.12,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.016666666666666666,
+          "p_podium": 0.13333333333333333,
+          "pos_p50": 12.5
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.05333333333333334,
+          "p_podium": 0.15,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.013333333333333334,
+          "p_podium": 0.07,
+          "pos_p50": 15.0
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "round": 17,
+      "winner": "VER",
+      "total_laps": 57,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.08333333333333333,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.0033333333333333335,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.03333333333333333,
+          "p_podium": 0.11666666666666667,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.08333333333333333,
+          "p_podium": 0.15333333333333332,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.04,
+          "p_podium": 0.13666666666666666,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.0033333333333333335,
+          "p_podium": 0.02666666666666667,
+          "pos_p50": 16.0
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "round": 18,
+      "winner": "VER",
+      "total_laps": 56,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.07333333333333333,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.016666666666666666,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.02,
+          "p_podium": 0.09,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.07333333333333333,
+          "p_podium": 0.16666666666666666,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.05,
+          "p_podium": 0.15,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.016666666666666666,
+          "p_podium": 0.06,
+          "pos_p50": 15.0
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "round": 19,
+      "winner": "VER",
+      "total_laps": 71,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.07666666666666666,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.013333333333333334,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.04,
+          "p_podium": 0.09666666666666666,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.14,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.07666666666666666,
+          "p_podium": 0.15666666666666668,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.013333333333333334,
+          "p_podium": 0.05333333333333334,
+          "pos_p50": 16.0
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "round": 20,
+      "winner": "VER",
+      "total_laps": 71,
+      "sc_rate": 0.0,
+      "recommended": "1-stop early",
+      "recommended_p_win": 0.043333333333333335,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.01,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.16,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.05,
+          "p_podium": 0.12333333333333334,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.02,
+          "p_podium": 0.11333333333333333,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.01,
+          "p_podium": 0.02666666666666667,
+          "pos_p50": 18.0
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "round": 21,
+      "winner": "VER",
+      "total_laps": 50,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.03666666666666667,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.03,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.11333333333333333,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.11666666666666667,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.15,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.03,
+          "p_podium": 0.07,
+          "pos_p50": 15.0
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "round": 22,
+      "winner": "VER",
+      "total_laps": 58,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.043333333333333335,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.03,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.02666666666666667,
+          "p_podium": 0.1,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.05333333333333334,
+          "p_podium": 0.15333333333333332,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.14333333333333334,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.03,
+          "p_podium": 0.08333333333333333,
+          "pos_p50": 15.5
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 1,
+      "winner": "VER",
+      "total_laps": 57,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.04666666666666667,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.03,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.06333333333333334,
+          "p_podium": 0.15,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.04666666666666667,
+          "p_podium": 0.13,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.13,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.03,
+          "p_podium": 0.08333333333333333,
+          "pos_p50": 15.0
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 2,
+      "winner": "VER",
+      "total_laps": 50,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.04666666666666667,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.043333333333333335,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.12,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.04666666666666667,
+          "p_podium": 0.12,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.05,
+          "p_podium": 0.11333333333333333,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.12333333333333334,
+          "pos_p50": 14.0
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 3,
+      "winner": "SAI",
+      "total_laps": 57,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.06,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.016666666666666666,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.04666666666666667,
+          "p_podium": 0.16333333333333333,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.06,
+          "p_podium": 0.13333333333333333,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.05333333333333334,
+          "p_podium": 0.15,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.016666666666666666,
+          "p_podium": 0.08666666666666667,
+          "pos_p50": 16.0
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 4,
+      "winner": "VER",
+      "total_laps": 53,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.05,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.01,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.016666666666666666,
+          "p_podium": 0.11,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.03333333333333333,
+          "p_podium": 0.11,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.05,
+          "p_podium": 0.17,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.01,
+          "p_podium": 0.04,
+          "pos_p50": 18.0
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 5,
+      "winner": "VER",
+      "total_laps": 56,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.03,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.03333333333333333,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.03333333333333333,
+          "p_podium": 0.09666666666666666,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.11,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.03,
+          "p_podium": 0.12333333333333334,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.03333333333333333,
+          "p_podium": 0.08333333333333333,
+          "pos_p50": 15.0
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 6,
+      "winner": "NOR",
+      "total_laps": 57,
+      "sc_rate": 0.0,
+      "recommended": "winner_actual",
+      "recommended_p_win": 0.07,
+      "winner_strategy_matched": true,
+      "winner_actual_p_win": 0.07,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.05,
+          "p_podium": 0.12666666666666668,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.03333333333333333,
+          "p_podium": 0.13333333333333333,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.06333333333333334,
+          "p_podium": 0.14,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.07,
+          "p_podium": 0.16,
+          "pos_p50": 12.0
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 7,
+      "winner": "VER",
+      "total_laps": 63,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.07666666666666666,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.07,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.04,
+          "p_podium": 0.12666666666666668,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.07666666666666666,
+          "p_podium": 0.14666666666666667,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.03333333333333333,
+          "p_podium": 0.13,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.07,
+          "p_podium": 0.13666666666666666,
+          "pos_p50": 12.0
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 8,
+      "winner": "LEC",
+      "total_laps": 78,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.05333333333333334,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.03,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.04666666666666667,
+          "p_podium": 0.14333333333333334,
+          "pos_p50": 14.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.05333333333333334,
+          "p_podium": 0.12333333333333334,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.05333333333333334,
+          "p_podium": 0.15333333333333332,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.03,
+          "p_podium": 0.1,
+          "pos_p50": 14.0
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 9,
+      "winner": "VER",
+      "total_laps": 70,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.043333333333333335,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.023333333333333334,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.03333333333333333,
+          "p_podium": 0.12333333333333334,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.15,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.14333333333333334,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.023333333333333334,
+          "p_podium": 0.04,
+          "pos_p50": 16.0
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 10,
+      "winner": "VER",
+      "total_laps": 66,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.05,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.02,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.12,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.11666666666666667,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.05,
+          "p_podium": 0.11,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.02,
+          "p_podium": 0.09666666666666666,
+          "pos_p50": 12.5
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 11,
+      "winner": "RUS",
+      "total_laps": 71,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.04,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.023333333333333334,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.04,
+          "p_podium": 0.1,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.04,
+          "p_podium": 0.09666666666666666,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.05,
+          "p_podium": 0.13666666666666666,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.023333333333333334,
+          "p_podium": 0.10333333333333333,
+          "pos_p50": 13.0
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 12,
+      "winner": "HAM",
+      "total_laps": 52,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.05,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.04,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.03,
+          "p_podium": 0.11333333333333333,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.05,
+          "p_podium": 0.14333333333333334,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.11,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.04,
+          "p_podium": 0.10666666666666667,
+          "pos_p50": 14.0
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 13,
+      "winner": "PIA",
+      "total_laps": 70,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.06333333333333334,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.016666666666666666,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.06,
+          "p_podium": 0.13,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.06333333333333334,
+          "p_podium": 0.17666666666666667,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.12333333333333334,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.016666666666666666,
+          "p_podium": 0.07666666666666666,
+          "pos_p50": 15.0
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 14,
+      "winner": "HAM",
+      "total_laps": 44,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.06333333333333334,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.01,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.06,
+          "p_podium": 0.14666666666666667,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.056666666666666664,
+          "p_podium": 0.13,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.06333333333333334,
+          "p_podium": 0.15666666666666668,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.01,
+          "p_podium": 0.023333333333333334,
+          "pos_p50": 16.0
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 15,
+      "winner": "NOR",
+      "total_laps": 72,
+      "sc_rate": 0.0,
+      "recommended": "winner_actual",
+      "recommended_p_win": 0.04666666666666667,
+      "winner_strategy_matched": true,
+      "winner_actual_p_win": 0.04666666666666667,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.02,
+          "p_podium": 0.10666666666666667,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.04,
+          "p_podium": 0.14333333333333334,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.05333333333333334,
+          "p_podium": 0.13666666666666666,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.04666666666666667,
+          "p_podium": 0.12,
+          "pos_p50": 12.0
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 16,
+      "winner": "LEC",
+      "total_laps": 53,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.03333333333333333,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.02,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.10666666666666667,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.03333333333333333,
+          "p_podium": 0.11666666666666667,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.04,
+          "p_podium": 0.12333333333333334,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.02,
+          "p_podium": 0.12666666666666668,
+          "pos_p50": 13.0
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 17,
+      "winner": "PIA",
+      "total_laps": 50,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.03666666666666667,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.043333333333333335,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.11333333333333333,
+          "pos_p50": 14.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.12333333333333334,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.05,
+          "p_podium": 0.15666666666666668,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.11333333333333333,
+          "pos_p50": 13.0
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 18,
+      "winner": "NOR",
+      "total_laps": 62,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.02666666666666667,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.043333333333333335,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.07333333333333333,
+          "pos_p50": 13.5
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.02666666666666667,
+          "p_podium": 0.12666666666666668,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.02666666666666667,
+          "p_podium": 0.1,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.14333333333333334,
+          "pos_p50": 12.0
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 19,
+      "winner": "LEC",
+      "total_laps": 56,
+      "sc_rate": 0.0,
+      "recommended": "winner_actual",
+      "recommended_p_win": 0.03666666666666667,
+      "winner_strategy_matched": true,
+      "winner_actual_p_win": 0.03666666666666667,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.05,
+          "p_podium": 0.12,
+          "pos_p50": 13.5
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.04,
+          "p_podium": 0.09666666666666666,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.04666666666666667,
+          "p_podium": 0.16,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.11333333333333333,
+          "pos_p50": 12.0
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 20,
+      "winner": "SAI",
+      "total_laps": 71,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.04,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.03666666666666667,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.10666666666666667,
+          "pos_p50": 13.5
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.04666666666666667,
+          "p_podium": 0.14333333333333334,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.04,
+          "p_podium": 0.13333333333333333,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.10333333333333333,
+          "pos_p50": 11.0
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 21,
+      "winner": "VER",
+      "total_laps": 69,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.05,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.02666666666666667,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.03333333333333333,
+          "p_podium": 0.11333333333333333,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.05,
+          "p_podium": 0.16,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.04666666666666667,
+          "p_podium": 0.14666666666666667,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.02666666666666667,
+          "p_podium": 0.09666666666666666,
+          "pos_p50": 15.0
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 22,
+      "winner": "RUS",
+      "total_laps": 50,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.023333333333333334,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.016666666666666666,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.02666666666666667,
+          "p_podium": 0.12333333333333334,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.023333333333333334,
+          "p_podium": 0.14666666666666667,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.06,
+          "p_podium": 0.14333333333333334,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.016666666666666666,
+          "p_podium": 0.05,
+          "pos_p50": 16.0
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 23,
+      "winner": "VER",
+      "total_laps": 57,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.06333333333333334,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.0,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.02666666666666667,
+          "p_podium": 0.09666666666666666,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.06333333333333334,
+          "p_podium": 0.16,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.05333333333333334,
+          "p_podium": 0.11,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.0,
+          "p_podium": 0.016666666666666666,
+          "pos_p50": 18.0
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "round": 24,
+      "winner": "NOR",
+      "total_laps": 58,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.04666666666666667,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.02666666666666667,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.03333333333333333,
+          "p_podium": 0.11333333333333333,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.04666666666666667,
+          "p_podium": 0.15666666666666668,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.056666666666666664,
+          "p_podium": 0.10333333333333333,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.02666666666666667,
+          "p_podium": 0.13,
+          "pos_p50": 12.0
+        }
+      ]
+    },
+    {
+      "year": 2025,
+      "round": 1,
+      "winner": "NOR",
+      "total_laps": 57,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.04666666666666667,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.0,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.11333333333333333,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.15333333333333332,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.04666666666666667,
+          "p_podium": 0.12666666666666668,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.0,
+          "p_podium": 0.0,
+          "pos_p50": 22.0
+        }
+      ]
+    },
+    {
+      "year": 2025,
+      "round": 2,
+      "winner": "PIA",
+      "total_laps": 56,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.05333333333333334,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.03,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.05333333333333334,
+          "p_podium": 0.14,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.023333333333333334,
+          "p_podium": 0.10666666666666667,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.05333333333333334,
+          "p_podium": 0.13333333333333333,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.03,
+          "p_podium": 0.11,
+          "pos_p50": 14.0
+        }
+      ]
+    },
+    {
+      "year": 2025,
+      "round": 3,
+      "winner": "VER",
+      "total_laps": 53,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.043333333333333335,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.05333333333333334,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.05,
+          "p_podium": 0.15333333333333332,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.056666666666666664,
+          "p_podium": 0.14333333333333334,
+          "pos_p50": 12.5
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.13333333333333333,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.05333333333333334,
+          "p_podium": 0.13666666666666666,
+          "pos_p50": 12.0
+        }
+      ]
+    },
+    {
+      "year": 2025,
+      "round": 4,
+      "winner": "PIA",
+      "total_laps": 57,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.056666666666666664,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.03,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.10666666666666667,
+          "pos_p50": 13.5
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.056666666666666664,
+          "p_podium": 0.14333333333333334,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.04666666666666667,
+          "p_podium": 0.13,
+          "pos_p50": 11.5
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.03,
+          "p_podium": 0.08,
+          "pos_p50": 15.0
+        }
+      ]
+    },
+    {
+      "year": 2025,
+      "round": 5,
+      "winner": "PIA",
+      "total_laps": 50,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.04,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.043333333333333335,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.04666666666666667,
+          "p_podium": 0.12666666666666668,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.04,
+          "p_podium": 0.15666666666666668,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.04666666666666667,
+          "p_podium": 0.14666666666666667,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.12,
+          "pos_p50": 13.5
+        }
+      ]
+    },
+    {
+      "year": 2025,
+      "round": 6,
+      "winner": "PIA",
+      "total_laps": 57,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.06,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.013333333333333334,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.04666666666666667,
+          "p_podium": 0.13666666666666666,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.023333333333333334,
+          "p_podium": 0.14333333333333334,
+          "pos_p50": 12.5
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.06,
+          "p_podium": 0.14333333333333334,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.013333333333333334,
+          "p_podium": 0.03666666666666667,
+          "pos_p50": 18.5
+        }
+      ]
+    },
+    {
+      "year": 2025,
+      "round": 7,
+      "winner": "VER",
+      "total_laps": 63,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.06666666666666667,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.023333333333333334,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.11666666666666667,
+          "pos_p50": 11.5
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.13333333333333333,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.06666666666666667,
+          "p_podium": 0.14333333333333334,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.023333333333333334,
+          "p_podium": 0.06333333333333334,
+          "pos_p50": 14.0
+        }
+      ]
+    },
+    {
+      "year": 2025,
+      "round": 8,
+      "winner": "NOR",
+      "total_laps": 78,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.043333333333333335,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.05,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.04666666666666667,
+          "p_podium": 0.1,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.03,
+          "p_podium": 0.13333333333333333,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.13,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.05,
+          "p_podium": 0.1,
+          "pos_p50": 14.0
+        }
+      ]
+    },
+    {
+      "year": 2025,
+      "round": 9,
+      "winner": "PIA",
+      "total_laps": 66,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.03333333333333333,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.02,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.05,
+          "p_podium": 0.13666666666666666,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.03333333333333333,
+          "p_podium": 0.12333333333333334,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.11666666666666667,
+          "pos_p50": 12.5
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.02,
+          "p_podium": 0.07333333333333333,
+          "pos_p50": 16.0
+        }
+      ]
+    },
+    {
+      "year": 2025,
+      "round": 10,
+      "winner": "RUS",
+      "total_laps": 66,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.07,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.03,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.02666666666666667,
+          "p_podium": 0.09666666666666666,
+          "pos_p50": 14.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.07,
+          "p_podium": 0.18333333333333332,
+          "pos_p50": 10.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.04,
+          "p_podium": 0.13666666666666666,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.03,
+          "p_podium": 0.07666666666666666,
+          "pos_p50": 14.0
+        }
+      ]
+    },
+    {
+      "year": 2025,
+      "round": 11,
+      "winner": "NOR",
+      "total_laps": 70,
+      "sc_rate": 0.0,
+      "recommended": "1-stop early",
+      "recommended_p_win": 0.04666666666666667,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.023333333333333334,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.04666666666666667,
+          "p_podium": 0.13,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.04666666666666667,
+          "p_podium": 0.14666666666666667,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.12,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.023333333333333334,
+          "p_podium": 0.08,
+          "pos_p50": 13.0
+        }
+      ]
+    },
+    {
+      "year": 2025,
+      "round": 12,
+      "winner": "NOR",
+      "total_laps": 52,
+      "sc_rate": 0.0,
+      "recommended": "1-stop early",
+      "recommended_p_win": 0.06,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.01,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.06,
+          "p_podium": 0.17333333333333334,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.12,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.05,
+          "p_podium": 0.14333333333333334,
+          "pos_p50": 11.5
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.01,
+          "p_podium": 0.03333333333333333,
+          "pos_p50": 18.0
+        }
+      ]
+    },
+    {
+      "year": 2025,
+      "round": 13,
+      "winner": "PIA",
+      "total_laps": 44,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.04,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.013333333333333334,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.04666666666666667,
+          "p_podium": 0.16,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.04,
+          "p_podium": 0.16,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.10333333333333333,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.013333333333333334,
+          "p_podium": 0.04666666666666667,
+          "pos_p50": 17.0
+        }
+      ]
+    },
+    {
+      "year": 2025,
+      "round": 14,
+      "winner": "NOR",
+      "total_laps": 70,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.03,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.04666666666666667,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.10666666666666667,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.03,
+          "p_podium": 0.12333333333333334,
+          "pos_p50": 10.5
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.11666666666666667,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.04666666666666667,
+          "p_podium": 0.11666666666666667,
+          "pos_p50": 12.0
+        }
+      ]
+    },
+    {
+      "year": 2025,
+      "round": 15,
+      "winner": "PIA",
+      "total_laps": 72,
+      "sc_rate": 0.0,
+      "recommended": "1-stop mid",
+      "recommended_p_win": 0.03666666666666667,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.03,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.043333333333333335,
+          "p_podium": 0.1,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.15,
+          "pos_p50": 11.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.05,
+          "p_podium": 0.13333333333333333,
+          "pos_p50": 14.0
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.03,
+          "p_podium": 0.1,
+          "pos_p50": 14.0
+        }
+      ]
+    },
+    {
+      "year": 2025,
+      "round": 16,
+      "winner": "VER",
+      "total_laps": 53,
+      "sc_rate": 0.0,
+      "recommended": "1-stop late",
+      "recommended_p_win": 0.05,
+      "winner_strategy_matched": false,
+      "winner_actual_p_win": 0.06,
+      "winner_pos_in_band": false,
+      "winner_pos": 1,
+      "per_strategy": [
+        {
+          "strategy": "1-stop early",
+          "p_win": 0.05,
+          "p_podium": 0.09666666666666666,
+          "pos_p50": 13.0
+        },
+        {
+          "strategy": "1-stop mid",
+          "p_win": 0.03666666666666667,
+          "p_podium": 0.13333333333333333,
+          "pos_p50": 12.0
+        },
+        {
+          "strategy": "1-stop late",
+          "p_win": 0.05,
+          "p_podium": 0.17,
+          "pos_p50": 11.5
+        },
+        {
+          "strategy": "winner_actual",
+          "p_win": 0.06,
+          "p_podium": 0.17,
+          "pos_p50": 12.0
+        }
+      ]
+    }
+  ]
+}

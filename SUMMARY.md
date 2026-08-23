@@ -6,10 +6,10 @@
 |---|---|---|
 | FastF1 ingestion → SQLite (2021–2025 races, resumable, rate-limit aware) | ✅ Built, run | Manifest-tracked; failures logged not hidden |
 | Streamlit historical explorer (degradation curves, pit timelines, undercut outcomes) | ✅ Built | Visual inspection |
-| Tire degradation quantile model (LightGBM P10/P50/P90) | ✅ Built + trained | Leave-one-race-out + 2025 season holdout; see `reports/degradation_validation.json` |
-| Undercut/overcut calculator | ✅ Built + backtested | Every detected historical attempt scored vs base-rate baseline (`reports/undercut_backtest.json`) |
-| Monte Carlo race simulator + SC incidence model | ✅ Built | Unit tests; full-stack retrospective backtest (`reports/backtest_report.md`) |
-| Formal backtesting framework | ✅ Built + run | Temporal protocol, all races reported incl. misses |
+| Tire degradation quantile model (LightGBM P10/P50/P90) | ✅ Built + trained | LORO over 102 races: MAE 0.70s, coverage 61.7%; 2025 holdout: MAE 0.95s, coverage 68.4% (below 80% target — documented, not fudged) |
+| Undercut/overcut calculator | ⚠️ Built + backtested — **FAILED** | Brier 0.714 vs baseline 0.248 on 992 attempts; anti-correlated. Causes diagnosed in `reports/undercut_backtest.json` + DECISIONS.md D22. Do not trust its probabilities yet |
+| Monte Carlo simulator + SC incidence model | ✅ Built | Unit tests; full-stack retrospective backtest (`reports/backtest_report.md`) |
+| Formal backtesting framework | ✅ Built + run | 62 races, temporal protocol: recommended strategy matched winner's actual strategy 3/62 (4.8%); winner inside sim's P10–P90 band 0/62 — the simulator does not model car dominance. All races reported |
 | Live prediction infra (immutable hash-sealed publish/score/social) | ✅ Built | 3 unit tests incl. tamper detection; **awaiting first real race weekend** |
 | LLM explainability w/ confidence gating | ✅ Built, **stubbed** | Needs `LLM_API_KEY` |
 | Tire cliff detection | ✅ Built | Synthetic-stint unit tests (exact breakpoint recovery) |
@@ -59,6 +59,16 @@ git add predictions && git commit -m "track record: <GP name>" && git push
 Predictions are immutable once published (hash-sealed); scoring verifies
 the seal. Over a season this builds the public, honestly-graded track
 record that is the whole point of the project.
+
+## Headline honesty statement
+
+The degradation model interpolates well (MAE ~0.7s) but under-covers its
+intervals. The undercut calculator **failed** its backtest. The full-stack
+simulator's strategy recommendation matched the actual winner only 3/62
+times, and its uncertainty bands are too wide to be informative about a
+dominant car. These negative results are published deliberately: they are
+the project's real current state, and each has a diagnosed cause and a
+planned fix (DECISIONS.md D20/D22).
 
 ## Known limitations (also in docs/methodology.md §7)
 
