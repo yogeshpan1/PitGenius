@@ -51,10 +51,29 @@ gap_after = g + fresh_delta − old_delta − (P_A − P_B)
 with fresh/old deltas sampled within the model's P10–P90 band and pit-loss
 difference ~ N(0, 0.5²). Output: P(position flip) + P10/P50/P90 gap after.
 
-**Backtest**: every historically detected attempt scored with a model
-trained only on prior seasons. Reported: Brier score vs base-rate baseline,
-log loss, calibration buckets, per-attempt records. See
-`reports/undercut_backtest.json`.
+**Backtest result — NEGATIVE, reported in full**: on 992 scorable attempts
+(2022+, temporal protocol), the calculator scored **Brier 0.714 vs 0.248**
+for a constant base-rate baseline and worse than a naive "predict each
+kind's base rate" baseline (~0.19). Predictions were *anti-correlated* with
+outcomes. Two causes diagnosed:
+
+1. The degradation model's fresh-tire deltas are implausible: at tire age 2
+   it predicts laps ~3 s faster than the driver's race median, because the
+   delta-vs-own-median target conflates tire state with stint-start lap
+   context.
+2. Attempt detection is endogenous — teams attempt undercuts almost only
+   when conditions already favour them (detected base rates: undercut 96%,
+   overcut 2%), so gap-at-attempt carries almost no signal within the
+   selected band.
+
+**Status: the Stage 4 calculator does NOT beat naive baselines and this is
+stated everywhere its numbers appear.** Planned fixes (DECISIONS.md D22):
+per-stint reference-lap target for degradation; separate P(attempt) from
+P(success|attempt); evaluate on all adjacent-stop pairs rather than
+"attempts". Until then, treat undercut probabilities as unvalidated.
+
+Full record: `reports/undercut_backtest.json` (includes calibration buckets
+and every per-attempt prediction).
 
 ## 4. Monte Carlo simulator (Stage 5)
 
