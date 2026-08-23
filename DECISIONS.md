@@ -120,4 +120,9 @@ across all ingested races and (b) train-on-seasons-A/B → test-on-season-C.
 The harder (b) number is treated as the headline honest estimate.
 **Reasoning:** (a) measures interpolation skill; (b) measures the actual
 deployment scenario (predicting future seasons). Reporting only (a) would be
-exactly the 94%-vs-62.5% trap.
+exactly the 94%-vs-62.5% trap.  
+## D20 - Quantile coverage below target is reported as-is  
+First full validation run: P10-P90 coverage 61.7%% (LORO) / 68.4%% (2025 holdout) vs 80%% target. LightGBM quantile models under-cover on noisy lap-time deltas. NOT widened post-hoc to flatter the numbers; documented in reports/degradation_validation.json and methodology section 7. Future fix candidates: conformal calibration layer, wider feature set (weather), per-circuit interval scaling.  
+  
+## D21 - Circuit identity keyed by (round, year)  
+Each race is its own categorical so the model learns per-race baselines from other drivers in the same race (the deployment scenario). Downside: no cross-year circuit transfer; accepted because calendar drift makes round-number identity unreliable anyway.  
