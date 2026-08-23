@@ -23,6 +23,11 @@ from pitgenius.data import clean, store
 
 log = logging.getLogger("pitgenius.ingest")
 
+# F1 livetiming API rate limits; back off and retry rather than fail.
+RATE_LIMIT_MARKERS = ("500 calls/h", "429", "Too Many Requests")
+RATE_LIMIT_SLEEP_S = 120
+MAX_RETRIES = 5
+
 
 def configure_cache(cache_dir=CACHE_DIR):
     cache_dir.mkdir(parents=True, exist_ok=True)
@@ -81,20 +86,34 @@ def backfill(seasons, rounds=None, session_code=RACE_SESSION_CODE,
                 if store.already_ingested(year, round_, session_code, conn):
                     log.info("skip %d R%d (already ingested)", year, round_)
                     continue
-                try:
-                    s = ingest_race(year, round_, session_code, conn)
-                    results.append(s)
-                    log.info("ok   %d R%-2d %-25s laps=%s in %.0fs",
-                             year, round_, ev["EventName"], s["laps"],
-                             s.get("seconds", 0))
-                except Exception as exc:  # noqa: BLE001 — backfill must survive
-                    log.warning("FAIL %d R%d: %s", year, round_, exc)
-                    store.record_manifest(year, round_, session_code, 0,
-                                          status="error", error=str(exc)[:500],
-                                          conn=conn)
-                    conn.commit()
-                    results.append({"year": year, "round": round_,
-                                    "status": "error", "error": str(exc)})
+                attempt = 0
+                while True:
+                    try:
+                        s = ingest_race(year, round_, session_code, conn)
+                        results.append(s)
+                        log.info("ok   %d R%-2d %-25s laps=%s in %.0fs",
+                                 year, round_, ev["EventName"], s["laps"],
+                                 s.get("seconds", 0))
+                        break
+                    except Exception as exc:  # noqa: BLE001 — must survive
+                        msg = str(exc)
+                        if any(mk in msg for mk in RATE_LIMIT_MARKERS) \
+                                and attempt < MAX_RETRIES:
+                            attempt += 1
+                            log.warning("rate-limited at %d R%d; sleeping "
+                                        "%ds (attempt %d/%d)", year, round_,
+                                        RATE_LIMIT_SLEEP_S, attempt,
+                                        MAX_RETRIES)
+                            time.sleep(RATE_LIMIT_SLEEP_S)
+                            continue
+                        log.warning("FAIL %d R%d: %s", year, round_, exc)
+                        store.record_manifest(year, round_, session_code, 0,
+                                              status="error",
+                                              error=msg[:500], conn=conn)
+                        conn.commit()
+                        results.append({"year": year, "round": round_,
+                                        "status": "error", "error": msg})
+                        break
     finally:
         conn.close()
     return pd.DataFrame(results)
