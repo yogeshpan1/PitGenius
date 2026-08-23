@@ -147,12 +147,12 @@ class MonteCarloSimulator:
             next_stop = [list(s.stops) for s in strategies] + [
                 [(field_stop_lap, "HARD")] for _ in range(self.n_field)]
 
-            compound_masks = {c: (compounds == c) for c in COMPOUNDS}
             for lap in range(1, total_laps + 1):
                 u = rng.uniform(size=n_cars)
                 deltas = np.empty(n_cars)
+                # masks must be rebuilt every lap: compounds change at stops
                 for c in COMPOUNDS:
-                    m = compound_masks[c]
+                    m = compounds == c
                     if m.any():
                         deltas[m] = self._sample_delta(qt[c], ages[m], u[m])
                 lap_times = base_lap_s + pace + deltas
