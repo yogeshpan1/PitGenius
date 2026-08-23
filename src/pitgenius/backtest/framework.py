@@ -83,7 +83,7 @@ def backtest_race(model, laps, pits, results, year, round_,
     if w_strategy.stops:
         cands.append(w_strategy)
 
-    sim = MonteCarloSimulator(model, sc_rate, mean_sc_period)
+    sim = MonteCarloSimulator(model, sc_rate, mean_period)
     sims = sim.run(cands, total_laps, base_lap, iterations=iterations)
 
     best = max(sims, key=lambda r: r.expected_points)

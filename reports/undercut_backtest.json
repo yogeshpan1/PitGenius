@@ -6,8 +6,10 @@
   "base_rate": 0.45564516129032256,
   "brier_model": 0.7140986164944557,
   "brier_baseline": 0.24803264828303845,
+  "brier_kind_baseline": 0.026425057178423726,
   "log_loss_model": 6.3725508567305855,
   "log_loss_baseline": 0.6892073001823917,
+  "honest_finding": "The physics-based calculator scores WORSE than both the constant base-rate and the kind-base-rate baselines on detected attempts. Two causes identified: (1) the degradation model's fresh-tire (age<=3) deltas are implausibly fast vs the driver-median target, exaggerating the undercut swing; (2) detected attempts are heavily selected \u2014 teams attempt undercuts almost only when conditions already favour them (96% base success), so gap-at-attempt carries little signal within the selected band. See DECISIONS.md D22.",
   "calibration": [
     {
       "bucket": "[0.00,0.30)",
