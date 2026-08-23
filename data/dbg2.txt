@@ -1,0 +1,20 @@
+   year  round      kind  gap_at_attempt_s  signed_gap_s attacker_compound  attacker_age defender_compound  defender_age  success
+0  2021      1  undercut            0.9200        0.9200              SOFT          13.0              SOFT          12.0     True
+1  2021      1   overcut            5.3250       -5.3250            MEDIUM          22.0            MEDIUM          21.0    False
+2  2021      1   overcut            1.7850       -1.7850              HARD          17.0              HARD          15.0    False
+3  2021      1  undercut            5.0310        5.0310              HARD          17.0            MEDIUM          17.0     True
+4  2021      1  undercut            6.8890        6.8890            MEDIUM          17.0            MEDIUM          18.0     True
+5  2021      1   overcut            5.0455       -5.0455            MEDIUM          13.0              SOFT          12.0    False
+6  2021      1   overcut            7.4250       -7.4250            MEDIUM          18.0            MEDIUM          17.0    False
+7  2021      1   overcut            5.5945       -5.5945            MEDIUM          17.0              HARD          17.0    False
+
+age stats:        attacker_age  defender_age
+count   1289.000000   1288.000000
+mean      20.076804     19.964286
+std       10.985712     11.014166
+min        1.000000      1.000000
+25%       12.000000     12.000000
+50%       18.000000     18.000000
+75%       27.000000     27.000000
+max       55.000000     55.000000
+fresh(2): -3.059720525094866  old(15): -1.8968605856012515

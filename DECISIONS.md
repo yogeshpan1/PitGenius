@@ -126,3 +126,9 @@ First full validation run: P10-P90 coverage 61.7%% (LORO) / 68.4%% (2025 holdout
   
 ## D21 - Circuit identity keyed by (round, year)  
 Each race is its own categorical so the model learns per-race baselines from other drivers in the same race (the deployment scenario). Downside: no cross-year circuit transfer; accepted because calendar drift makes round-number identity unreliable anyway.  
+  
+## D22 - Undercut calculator FAILED its backtest; reported honestly  
+
+## D22 - Undercut calculator FAILED its backtest; reported honestly
+
+First full backtest: Brier 0.714 vs constant-baseline 0.248 and kind-baseline ~0.19. The calculator is ANTI-correlated with outcomes on detected attempts. Causes: (a) degradation model gives implausible fresh-tire deltas (-3s vs driver median at age 2) because the delta-vs-own-median target conflates tire state with lap context at stint starts; (b) attempt detection is endogenous - teams attempt undercuts precisely when they work, so within the detected sample the gap carries little signal (undercut base rate 96 pct, overcut 2 pct). Next steps: fix the degradation target (per-stint reference lap instead of race median), model P(attempt) separately from P(success|attempt), evaluate on ALL adjacent-stop pairs not just detected attempts.

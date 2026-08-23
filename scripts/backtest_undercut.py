@@ -115,6 +115,7 @@ def main():
         model = TireDegradationModel().fit(train)
 
         preds, ys = [], []
+        test = test.dropna(subset=["attacker_age", "defender_age"])
         for _, a in test.iterrows():
             call = undercut_calc.evaluate_move(
                 model,
@@ -151,9 +152,22 @@ def main():
         "brier_model": brier(res["p_predicted"], res["success"]),
         "brier_baseline": brier(np.full(len(res), base_rate),
                                 res["success"]),
+        "brier_kind_baseline": brier(
+            res["kind"].map(res.groupby("kind")["success"].mean()),
+            res["success"]),
         "log_loss_model": log_loss(res["p_predicted"], res["success"]),
         "log_loss_baseline": log_loss(np.full(len(res), base_rate),
                                       res["success"]),
+        "honest_finding": (
+            "The physics-based calculator scores WORSE than both the "
+            "constant base-rate and the kind-base-rate baselines on "
+            "detected attempts. Two causes identified: (1) the degradation "
+            "model's fresh-tire (age<=3) deltas are implausibly fast vs "
+            "the driver-median target, exaggerating the undercut swing; "
+            "(2) detected attempts are heavily selected — teams attempt "
+            "undercuts almost only when conditions already favour them "
+            "(96% base success), so gap-at-attempt carries little signal "
+            "within the selected band. See DECISIONS.md D22."),
         "calibration": [],
         "by_kind": {},
         "per_attempt": res.to_dict(orient="records"),
