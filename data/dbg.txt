@@ -1,0 +1,5 @@
+att dtypes: {'year': dtype('int64'), 'round': dtype('int64'), 'attacker_pit_lap': dtype('int64')}
+laps dtypes: {'year': dtype('int64'), 'round': dtype('int64'), 'driver': dtype('O'), 'lap_number': dtype('int64')}
+key: (np.int64(2021), np.int64(1), 'ALO', np.int64(11)) types: ['int64', 'int64', 'str', 'int64']
+KeyError: KeyError((np.int64(2021), np.int64(1), 'ALO', np.int64(11)))
+nearby rows: [{'lap_number': 10, 'tire_compound': 'SOFT', 'tire_life': 13.0}]

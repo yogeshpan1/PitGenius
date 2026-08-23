@@ -43,22 +43,27 @@ def log_loss(p, y, eps=1e-6):
     return float(-np.mean(y * np.log(p) + (1 - y) * np.log(1 - p)))
 
 
+def _lap_at_or_before(laps: pd.DataFrame, year, round_, driver,
+                      lap) -> pd.Series | None:
+    """Row for `lap`; falls back to nearest earlier lap (pit laps are
+    sometimes missing from the timing feed)."""
+    g = laps[(laps["year"] == year) & (laps["round"] == round_)
+             & (laps["driver"] == driver) & (laps["lap_number"] <= lap)]
+    if g.empty:
+        return None
+    return g.loc[g["lap_number"].idxmax()]
+
+
 def attempt_features(laps: pd.DataFrame, att: pd.DataFrame) -> pd.DataFrame:
     """Attach tire compound/age at each car's stop lap to every attempt."""
     out = []
-    lap_idx = laps.set_index(["year", "round", "driver", "lap_number"])
     for _, a in att.iterrows():
-        try:
-            ar = lap_idx.loc[(a["year"], a["round"], a["attacker"],
-                              a["attacker_pit_lap"])]
-            dr = lap_idx.loc[(a["year"], a["round"], a["defender"],
-                              a["defender_pit_lap"])]
-        except KeyError:
+        ar = _lap_at_or_before(laps, a["year"], a["round"], a["attacker"],
+                               a["attacker_pit_lap"])
+        dr = _lap_at_or_before(laps, a["year"], a["round"], a["defender"],
+                               a["defender_pit_lap"])
+        if ar is None or dr is None:
             continue
-        if isinstance(ar, pd.DataFrame):
-            ar = ar.iloc[0]
-        if isinstance(dr, pd.DataFrame):
-            dr = dr.iloc[0]
         out.append({
             **a.to_dict(),
             "attacker_compound": ar["tire_compound"],
