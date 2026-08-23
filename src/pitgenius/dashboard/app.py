@@ -31,10 +31,10 @@ COMPOUND_COLORS = {
 def load_all():
     conn = store.connect()
     try:
-        races = store.load_races(conn)
-        laps = store.load_laps(conn)
-        pits = store.load_pit_stops(conn)
-        results = store.load_results(conn)
+        races = store.load_races(conn=conn)
+        laps = store.load_laps(conn=conn)
+        pits = store.load_pit_stops(conn=conn)
+        results = store.load_results(conn=conn)
     finally:
         conn.close()
     return races, laps, pits, results

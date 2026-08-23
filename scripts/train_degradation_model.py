@@ -42,7 +42,7 @@ def main():
     t0 = time.time()
     conn = store.connect()
     try:
-        laps = store.load_laps(conn)
+        laps = store.load_laps(conn=conn)
     finally:
         conn.close()
     print(f"Loaded {len(laps):,} lap rows "

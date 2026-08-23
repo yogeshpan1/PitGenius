@@ -77,8 +77,8 @@ def main():
     t0 = time.time()
     conn = store.connect()
     try:
-        laps = store.load_laps(conn)
-        pits = store.load_pit_stops(conn)
+        laps = store.load_laps(conn=conn)
+        pits = store.load_pit_stops(conn=conn)
     finally:
         conn.close()
     print(f"Laps {len(laps):,}, stops {len(pits):,}")
