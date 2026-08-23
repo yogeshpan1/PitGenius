@@ -42,15 +42,21 @@ class StrategyCall:
 
 def _sample_deltas(model: TireDegradationModel, rows: pd.DataFrame,
                    n: int, rng: np.random.Generator) -> np.ndarray:
-    """Sample lap-delta values consistent with the model's P10/P50/P90."""
+    """Sample lap-delta values consistent with the model's P10/P50/P90.
+
+    Returns shape (n, n_rows): one sampled delta per row per draw.
+    """
     pred = model.predict(rows)
-    u = rng.uniform(size=n)
+    p10 = np.asarray(pred.p10)
+    p50 = np.asarray(pred.p50)
+    p90 = np.asarray(pred.p90)
+    u = rng.uniform(size=(n, len(p50)))
     # Triangular-ish interpolation between quantiles: below-median draws
     # interpolate P10->P50, above-median draws P50->P90.
     return np.where(
         u < 0.5,
-        pred.p10 + (pred.p50 - pred.p10) * (u * 2),
-        pred.p50 + (pred.p90 - pred.p50) * ((u - 0.5) * 2),
+        p10 + (p50 - p10) * (u * 2),
+        p50 + (p90 - p50) * ((u - 0.5) * 2),
     )
 
 
@@ -86,9 +92,10 @@ def evaluate_move(
     fresh = samples[:, 0]     # attacker out-lap on ~2-lap-old tires
     old = samples[:, 1]       # defender's lap on older tires
 
-    # Pit-loss uncertainty: +/-1.5s empirical spread (see reports).
-    p_a = rng.normal(pit_loss_attacker, 1.5, n_samples)
-    p_b = rng.normal(pit_loss_defender, 1.5, n_samples)
+    # Car-to-car pit-loss difference uncertainty (~0.5s sd; same-team stops
+    # differ by fractions of a second, cross-team up to ~1s).
+    p_a = rng.normal(pit_loss_attacker, 0.5, n_samples)
+    p_b = rng.normal(pit_loss_defender, 0.5, n_samples)
 
     # gap_after from ATTACKER's perspective: negative => ahead.
     gap_after = gap_s + fresh - old - (p_a - p_b)

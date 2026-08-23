@@ -46,7 +46,7 @@ def parse_acc_car_update(buf: bytes) -> CarState:
     if len(buf) < ACC_CAR_UPDATE_FMT.size:
         raise ValueError(f"packet too short: {len(buf)} bytes")
     (car_index, pos_x, pos_y, pos_z, lap_time_ms, _spline, lap_dist,
-     rpm) = ACC_CAR_UPDATE_FMT.unpack_from(buf, 0)
+     _b1, rpm, _b2) = ACC_CAR_UPDATE_FMT.unpack_from(buf, 0)
     # Speed from position delta is not available in a single packet; ACC
     # provides kmh later in the packet at offset 60 (documented).
     speed_kmh = struct.unpack_from("<f", buf, 60)[0] if len(buf) >= 64 else 0.0
