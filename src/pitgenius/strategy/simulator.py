@@ -147,12 +147,14 @@ class MonteCarloSimulator:
             next_stop = [list(s.stops) for s in strategies] + [
                 [(field_stop_lap, "HARD")] for _ in range(self.n_field)]
 
+            compound_masks = {c: (compounds == c) for c in COMPOUNDS}
             for lap in range(1, total_laps + 1):
                 u = rng.uniform(size=n_cars)
                 deltas = np.empty(n_cars)
-                for ci in range(n_cars):
-                    deltas[ci] = self._sample_delta(
-                        qt[compounds[ci]], ages[ci:ci + 1], u[ci:ci + 1])[0]
+                for c in COMPOUNDS:
+                    m = compound_masks[c]
+                    if m.any():
+                        deltas[m] = self._sample_delta(qt[c], ages[m], u[m])
                 lap_times = base_lap_s + pace + deltas
                 if sc_mask[lap - 1]:
                     lap_times += base_lap_s * 0.28   # SC slows everyone equally
