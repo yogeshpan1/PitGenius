@@ -1,0 +1,14 @@
+fastf1==3.8.3
+pandas==2.3.3
+numpy
+scikit-learn==1.9.0
+lightgbm==4.7.0
+streamlit
+plotly
+fastapi
+uvicorn[standard]
+pytest
+httpx
+joblib
+pyarrow
+python-dotenv

@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual env
+.venv/
+
+# FastF1 cache (large, reproducible)
+data/cache/
+
+# Raw parquet dumps (reproducible from cache)
+data/raw/*.parquet
+
+# SQLite DB (reproducible via ingestion)
+data/pitgenius.db
+
+# Logs / temp
+*.log
+check.log
+pip_install.log
+
+# Model artifacts
+models/*.joblib
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Env vars (credentials)
+.env
+
+# Node
+node_modules/
+frontend/dist/

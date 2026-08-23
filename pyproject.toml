@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pitgenius"
+version = "0.1.0"
+description = "Open-source F1 race strategy analytics and Monte Carlo simulation"
+requires-python = ">=3.10"
+dependencies = [
+    "fastf1",
+    "pandas",
+    "numpy",
+    "scikit-learn",
+    "lightgbm",
+    "plotly",
+]
+
+[project.optional-dependencies]
+dashboard = ["streamlit"]
+api = ["fastapi", "uvicorn[standard]"]
+dev = ["pytest", "httpx"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
