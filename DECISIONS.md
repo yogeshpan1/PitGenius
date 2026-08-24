@@ -141,6 +141,22 @@ Fix 2 (P(attempt) separate): undercut_history.find_adjacent_pairs builds ALL adj
 
 Fix 3 (all-pairs evaluation): scripts/backtest_undercut.py scores every pair. Selection bias removed from EVALUATION as designed: first-pitter retention base rate drops from ~96 pct (selected attempts) to ~15 pct (all pairs). Result: PRIMARY all pairs n=1852: Brier(model)=0.5005 vs constant-baseline 0.1383 and kind-baseline 0.1256; LogLoss(model)=4.3626. Subset is_attempt n=1144: 0.5076 vs 0.1482.
 
-VERDICT: the D22 mechanics are implemented and measured correctly, but the calculator STILL does not beat naive baselines - its p_flip clusters at extremes while outcomes sit near 15 pct. Remaining diagnosed defect: the physics p_flip's calibration/orientation itself (evaluate_move's kind/gap sign conventions are suspect and unvalidated against outcomes). Do not trust undercut probabilities.
+VERDICT (superseded by D22 fixes 4+5 below): the D22 mechanics are implemented and measured correctly, but the calculator STILL does not beat naive baselines - its p_flip clusters at extremes while outcomes sit near 15 pct. Remaining diagnosed defect: the physics p_flip's calibration/orientation itself (evaluate_move's kind/gap sign conventions are suspect and unvalidated against outcomes). Do not trust undercut probabilities.
+
+### D22 fixes 4+5 - orientation bug found and fixed; calibration layer added
+
+Diagnosis (scripts/audit_pflip_orientation.py): v1-v3 returned P(gap_after<0), i.e. the probability the FIRST PITTER LOSES, but scored it against labels where success means the first pitter RETAINS. Real-data audit: corr(p_predicted, success) = -0.328 - predictions were literally inverted since v1; this, not selection bias alone, is why every earlier protocol looked anti-correlated.
+
+Fix 4: evaluate_move rewritten - returns p_success = P(attacker ahead after both stops) matching the label, and models multi-lap physics (response_laps: k laps of responder old-tire degradation vs attacker fresh-tire laps; v1-v3 modeled one lap and ignored k). recommend() reframed for the trailing car. Tests updated to retention semantics + multi-lap monotonicity test (16 passed).
+
+Fix 5: temporal calibration layer in scripts/backtest_undercut.py - logistic fitted only on prior-season pairs (raw physics p, log-gap capped 60s, kind, response_laps), applied to each test season. Raw-physics scores reported alongside.
+
+Verification chain (all real runs):
+- Orientation+multi-lap only (uncalibrated): Brier 0.5005 -> 0.3588, LogLoss 4.3626 -> 2.4807.
+- With calibration: Brier(calibrated)=0.1295 (first feature set); adding capped gap + response_laps gave 0.1298 - second iteration changed nothing material, stopped tuning.
+- Fair baselines (scripts/audit_baselines.py, n-weighted pooled): model 0.1295 vs constant base-rate 0.1373 (BEATEN, both Brier and log loss 0.4115 vs 0.4491) vs non-leaky prior-kind-rates baseline 0.1270 (NOT beaten, gap ~0.003) vs oracle kind-rates fitted on test season 0.1235.
+- Per season: model beats constant baseline in 2024 (0.1258 vs 0.1422) and 2025 (0.1311 vs 0.1643); loses 2022/2023 where the calibrator has least history.
+
+STATUS: first time this component beats naive constant-rate guessing out of sample. D22 remains OPEN by the project bar: it must also beat trivial prior-information baselines (per-kind prior-season rates); remaining gap ~0.003 Brier most plausibly needs a car-pace/dominance feature (same root cause as the simulator's D20 problem). Do not treat probabilities as production-grade until that lands.
 
 BoxBox cross-check (scripts/crosscheck_boxbox.py, real output in reports/_boxbox_crosscheck.log): pit_strategy.csv labels usable on only 6/1388 rows (0.4 pct; strategy_outcome is "Unknown" elsewhere and derives from FastF1's noisy Position lag/lead, with no adjacency or rival comparison) - EXCLUDED from D22 entirely. team_strategy.csv is a dated 2021-22 proxy whose success counts inherit those broken labels (mean "undercut success" 1.8 pct vs our same-era detected rates: 92.5 pct undercut / 4.6 pct overcut) - partial, dated signal only, relevant at most to the simulator dominance term later. Per-lap CSVs: all_race_laps_Final.csv (45,115 laps, 42 races) already contains BOTH 2021 AND 2022 - merging it with 2021_remaining.csv and all_race_laps_2022_complete.csv would double-count; era overlaps the ingested DB (108 races, 2021-2025), so boxbox laps are redundant for D22 and add only sector/speed-trap columns.

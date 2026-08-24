@@ -66,8 +66,7 @@ outcomes. Two causes diagnosed:
    overcut 2%), so gap-at-attempt carries almost no signal within the
    selected band.
 
-**D22 fixes implemented (this session) and re-evaluated — still negative,
-reported in full.**
+**D22 fixes 1-5 implemented and re-evaluated.**
 
 - Fix 1 (per-stint reference target): `build_training_frame` now targets the
   delta vs the median fuel-adjusted clean lap over the first 3 tire-life
@@ -83,22 +82,27 @@ reported in full.**
   not hidden.
 - Fix 3 (all-pairs evaluation): `scripts/backtest_undercut.py` now scores
   every adjacent-stop pair (n=1852, seasons 2022+, temporal protocol).
-  Removing selection bias works as designed — first-pitter retention base
-  rate falls from ~96 % (selected attempts) to ~15 % (all pairs) — but the
-  calculator STILL does not beat naive baselines:
-  **Brier(model) = 0.5005 vs constant-baseline 0.1383 and kind-baseline
-  0.1256; LogLoss(model) = 4.36**, i.e. p_flip clusters at extremes while
-  outcomes sit near 15 %.
+- Fix 4 (orientation + multi-lap physics): audit showed v1-v3 returned
+  P(first pitter LOSES) against retention labels (corr −0.328 — inverted
+  since v1). `evaluate_move` now returns P(attacker ahead after both stops)
+  and accumulates fresh-vs-old deltas over ALL response laps. Uncalibrated:
+  Brier 0.5005 → 0.3588, log loss 4.36 → 2.48.
+- Fix 5 (temporal calibration layer): logistic fitted only on prior-season
+  pairs, applied per test season. Final: **Brier(calibrated) = 0.1295** vs
+  constant base-rate baseline **0.1373 (beaten**, log loss 0.4115 vs 0.4491**)**;
+  vs non-leaky prior-kind-rates baseline **0.1270 (not yet beaten**, gap
+  ≈ 0.003**)**. Wins 2024/2025, loses 2022/2023 (calibrator has least
+  history there).
 
-**Status: the Stage 4 calculator does NOT beat naive baselines after the D22
-fixes either; this is stated everywhere its numbers appear.** The D22
-mechanics (target fix, model separation, debiased evaluation) are now in
-place and measured correctly; the remaining defect is the calculator's own
-probability calibration/orientation, which is the next diagnosed work item.
-Until that lands, treat undercut probabilities as unvalidated.
+**Status: the calculator beats naive constant-rate guessing out of sample
+for the first time, but does not yet beat trivial prior-information
+baselines.** Remaining gap most plausibly needs a car-pace/dominance feature
+(the same root cause as the simulator's D20 finding). Probabilities are
+directionally sound but not production-grade.
 
 Full record: `reports/undercut_backtest.json` (legacy numbers embedded for
-comparison, calibration buckets, per-pair predictions).
+comparison, raw-physics vs calibrated blocks, calibration buckets,
+per-pair predictions).
 
 ## 4. Monte Carlo simulator (Stage 5)
 
