@@ -14,7 +14,7 @@ from __future__ import annotations
 
 import json
 import os
-import urllib.request
+import requests
 
 from pitgenius.config import LLM_API_KEY, LLM_BASE_URL, LLM_MODEL
 
@@ -58,21 +58,20 @@ def _live_explanation(payload: dict, tier: str) -> str:
            "The model is uncertain: hedge every claim, never say "
            "'will' or 'guaranteed', prefer 'suggests'/'estimates'.")
     )
-    body = json.dumps(payload)
-    req = urllib.request.Request(
+    resp = requests.post(
         f"{LLM_BASE_URL}/chat/completions",
-        data=json.dumps({
+        json={
             "model": LLM_MODEL,
             "messages": [{"role": "system", "content": system},
-                         {"role": "user", "content": body}],
+                         {"role": "user", "content": json.dumps(payload)}],
             "temperature": 0.3,
-        }).encode(),
+        },
         headers={"Authorization": f"Bearer {LLM_API_KEY}",
                  "Content-Type": "application/json"},
+        timeout=30,
     )
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        data = json.loads(resp.read())
-    return data["choices"][0]["message"]["content"]
+    resp.raise_for_status()
+    return resp.json()["choices"][0]["message"]["content"]
 
 
 def explain(payload: dict) -> dict:
