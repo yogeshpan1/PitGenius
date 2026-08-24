@@ -1,12 +1,19 @@
-"""Backtest the undercut/overcut calculator against every real historical
-attempt in the dataset.
+"""Backtest the undercut/overcut calculator against ALL adjacent-stop pairs
+in the dataset — DECISIONS.md D22 fixes 1-3.
 
 Protocol (temporal, honest):
-  For each season Y in [2022..HOLDOUT]: train the degradation model only on
-  seasons < Y, then score every detected attempt in season Y.
-  Reported: Brier score, log loss, calibration by predicted-probability
-  bucket, counts of successes AND failures, plus a base-rate baseline.
+  For each season Y in [2022..HOLDOUT]: train the degradation model AND the
+  P(attempt) model only on seasons < Y, then score EVERY adjacent-stop pair
+  in season Y (not just detected attempts — scoring only attempts was the
+  selection bias that made v1 anti-correlated).
 
+Reported:
+  - PRIMARY: Brier / log loss of the physics p_flip on all pairs, against
+    constant-base-rate and kind-base-rate baselines.
+  - Subset metrics on is_attempt==True pairs (comparable to the legacy
+    detected-attempts protocol).
+  - P(attempt) model quality: Brier / log loss / ROC-AUC vs its own
+    constant base-rate baseline.
 Outputs: reports/undercut_backtest.json
 """
 from __future__ import annotations
@@ -20,6 +27,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import numpy as np
 import pandas as pd
+from sklearn.metrics import roc_auc_score
 
 from pitgenius.analysis import undercut_history
 from pitgenius.config import REPORTS_DIR
@@ -29,8 +37,16 @@ from pitgenius.models.degradation_model import (
     build_training_frame,
 )
 from pitgenius.strategy import undercut_calc
+from pitgenius.strategy.attempt_model import AttemptModel
 
 FIRST_TEST_YEAR = 2022
+
+# Reference points from the pre-fix protocol (reports history, kept for
+# honest before/after comparison; both scored on DETECTED ATTEMPTS ONLY):
+LEGACY = {
+    "v1_race_median_target": {"brier_model": 0.7141, "brier_baseline": 0.2480},
+    "v2_per_stint_target": {"brier_model": 0.7590, "brier_baseline": 0.2480},
+}
 
 
 def brier(p, y):
@@ -55,7 +71,7 @@ def _lap_at_or_before(laps: pd.DataFrame, year, round_, driver,
 
 
 def attempt_features(laps: pd.DataFrame, att: pd.DataFrame) -> pd.DataFrame:
-    """Attach tire compound/age at each car's stop lap to every attempt."""
+    """Attach tire compound/age at each car's stop lap to every pair."""
     out = []
     for _, a in att.iterrows():
         ar = _lap_at_or_before(laps, a["year"], a["round"], a["attacker"],
@@ -70,12 +86,30 @@ def attempt_features(laps: pd.DataFrame, att: pd.DataFrame) -> pd.DataFrame:
             "attacker_age": ar["tire_life"],
             "defender_compound": dr["tire_compound"],
             "defender_age": dr["tire_life"],
-            # gap convention in calc: +ve = rival leads. In `find_attempts`,
-            # attacker is behind for undercuts (gap>0), ahead for overcuts.
+            # gap convention in calc: +ve = rival leads (unchanged from the
+            # legacy protocol, so before/after numbers stay comparable).
             "signed_gap_s": a["gap_at_attempt_s"]
             * (1 if a["kind"] == "undercut" else -1),
         })
     return pd.DataFrame(out)
+
+
+def _block(res: pd.DataFrame) -> dict:
+    base_rate = float(res["success"].mean())
+    return {
+        "n": int(len(res)),
+        "n_success": int(res["success"].sum()),
+        "base_rate": base_rate,
+        "brier_model": brier(res["p_predicted"], res["success"]),
+        "brier_baseline": brier(np.full(len(res), base_rate),
+                                res["success"]),
+        "brier_kind_baseline": brier(
+            res["kind"].map(res.groupby("kind")["success"].mean()),
+            res["success"]),
+        "log_loss_model": log_loss(res["p_predicted"], res["success"]),
+        "log_loss_baseline": log_loss(np.full(len(res), base_rate),
+                                      res["success"]),
+    }
 
 
 def main():
@@ -88,19 +122,23 @@ def main():
         conn.close()
     print(f"Laps {len(laps):,}, stops {len(pits):,}")
 
-    cache = REPORTS_DIR / "_attempts_cache.parquet"
+    cache = REPORTS_DIR / "_pairs_cache.parquet"
     if cache.exists():
-        att = pd.read_parquet(cache)
-        print(f"Loaded {len(att)} cached attempts")
+        pairs = pd.read_parquet(cache)
+        print(f"Loaded {len(pairs)} cached adjacent-stop pairs")
     else:
-        print("Detecting attempts across all races ...")
-        att = undercut_history.find_attempts(laps, pits)
-        att.to_parquet(cache, index=False)
-    print(f"Attempts detected: {len(att)} "
-          f"({att['kind'].value_counts().to_dict() if len(att) else {}})")
+        print("Generating ALL adjacent-stop pairs across all races ...")
+        pairs = undercut_history.find_adjacent_pairs(laps, pits,
+                                                     progress=True)
+        pairs.to_parquet(cache, index=False)
+    n_att = int(pairs["is_attempt"].sum())
+    print(f"All pairs: {len(pairs)} "
+          f"({pairs['kind'].value_counts().to_dict()}), "
+          f"is_attempt={n_att} ({n_att / max(len(pairs), 1):.1%})")
 
-    feats = attempt_features(laps, att)
-    print(f"AttemptsWithTireData: {len(feats)}")
+    feats = attempt_features(laps, pairs)
+    feats = feats.dropna(subset=["attacker_age", "defender_age"])
+    print(f"PairsWithTireData: {len(feats)}")
 
     data_all = build_training_frame(laps)
 
@@ -108,17 +146,17 @@ def main():
     for year in sorted(feats["year"].unique()):
         if year < FIRST_TEST_YEAR:
             continue
-        train = data_all[data_all["year"] < year]
+        train_deg = data_all[data_all["year"] < year]
+        train_att = feats[feats["year"] < year]
         test = feats[feats["year"] == year]
-        if train.empty or test.empty:
+        if train_deg.empty or train_att.empty or test.empty:
             continue
-        model = TireDegradationModel().fit(train)
+        deg_model = TireDegradationModel().fit(train_deg)
+        att_model = AttemptModel().fit(train_att)
 
-        preds, ys = [], []
-        test = test.dropna(subset=["attacker_age", "defender_age"])
         for _, a in test.iterrows():
             call = undercut_calc.evaluate_move(
-                model,
+                deg_model,
                 kind=a["kind"],
                 gap_s=float(a["signed_gap_s"]),
                 attacker_compound=a["attacker_compound"],
@@ -127,50 +165,67 @@ def main():
                 defender_age=int(a["defender_age"]),
                 circuit=f"{int(a['round'])}_{int(a['year'])}",
             )
-            preds.append(call.p_flip)
-            ys.append(int(bool(a["success"])))
             rows.append({
                 "year": a["year"], "round": a["round"], "kind": a["kind"],
-                "p_predicted": call.p_flip, "success": int(bool(a["success"])),
+                "p_predicted": call.p_flip,
+                "p_attempt": float(att_model.predict_proba(
+                    pd.DataFrame([a]))[0]),
+                "is_attempt": bool(a["is_attempt"]),
+                "success": int(bool(a["success"])),
                 "gap_at_attempt_s": a["gap_at_attempt_s"],
             })
 
     res = pd.DataFrame(rows)
     if res.empty:
-        print("No scorable attempts found.")
+        print("No scorable pairs found.")
         return
 
-    base_rate = float(res["success"].mean())
+    all_block = _block(res)
+    att_only = res[res["is_attempt"]]
+    att_block = _block(att_only) if len(att_only) else {}
+
+    # --- P(attempt) model quality (temporal holdout seasons pooled) --------
+    p_att = res["p_attempt"].to_numpy()
+    y_att = res["is_attempt"].astype(int).to_numpy()
+    att_base = float(y_att.mean())
+    attempt_report = {
+        "model": "LogisticRegression(gap, ages, age_diff, same_compound)",
+        "train_protocol": "seasons < each test season",
+        "n_test_pairs": int(len(res)),
+        "base_rate": att_base,
+        "brier_model": brier(p_att, y_att),
+        "brier_baseline": brier(np.full(len(res), att_base), y_att),
+        "log_loss_model": log_loss(p_att, y_att),
+        "log_loss_baseline": log_loss(np.full(len(res), att_base), y_att),
+        "roc_auc": float(roc_auc_score(y_att, p_att)),
+    }
+
+    better = all_block["brier_model"] < all_block["brier_baseline"]
     report = {
-        "protocol": ("Temporal: degradation model trained only on seasons "
-                     "before each attempt's season. All detected attempts "
-                     "scored — no filtering."),
-        "n_attempts": int(len(res)),
-        "n_success": int(res["success"].sum()),
-        "n_failure": int(len(res) - res["success"].sum()),
-        "base_rate": base_rate,
-        "brier_model": brier(res["p_predicted"], res["success"]),
-        "brier_baseline": brier(np.full(len(res), base_rate),
-                                res["success"]),
-        "brier_kind_baseline": brier(
-            res["kind"].map(res.groupby("kind")["success"].mean()),
-            res["success"]),
-        "log_loss_model": log_loss(res["p_predicted"], res["success"]),
-        "log_loss_baseline": log_loss(np.full(len(res), base_rate),
-                                      res["success"]),
+        "protocol": (
+            "Temporal: degradation model AND P(attempt) model trained only "
+            "on seasons before each pair's season. ALL adjacent-stop pairs "
+            "(direct neighbours, stops within 5 laps) are scored — the "
+            "detected-attempts-only protocol is retained only as a labelled "
+            "subset. This removes the D22 selection bias from evaluation."),
+        "legacy_reference_detected_attempts_only": LEGACY,
+        "primary_all_pairs": all_block,
+        "subset_is_attempt": att_block,
+        "attempt_model": attempt_report,
         "honest_finding": (
-            "The physics-based calculator scores WORSE than both the "
-            "constant base-rate and the kind-base-rate baselines on "
-            "detected attempts. Two causes identified: (1) the degradation "
-            "model's fresh-tire (age<=3) deltas are implausibly fast vs "
-            "the driver-median target, exaggerating the undercut swing; "
-            "(2) detected attempts are heavily selected — teams attempt "
-            "undercuts almost only when conditions already favour them "
-            "(96% base success), so gap-at-attempt carries little signal "
-            "within the selected band. See DECISIONS.md D22."),
+            "PRIMARY evaluation now scores every adjacent-stop pair, not "
+            "just self-selected attempts. Result: Brier(model)"
+            f"={all_block['brier_model']:.4f} vs constant baseline "
+            f"{all_block['brier_baseline']:.4f} -> "
+            + ("the calculator BEATS the constant baseline on all pairs."
+               if better else
+               "the calculator STILL DOES NOT beat the constant baseline.")
+            + " P(success|attempt) and P(attempt) are modeled separately; "
+              "their product is P(response AND flip), never reported as a "
+              "success probability for non-attempted pairs."),
         "calibration": [],
         "by_kind": {},
-        "per_attempt": res.to_dict(orient="records"),
+        "per_pair": res.to_dict(orient="records"),
     }
 
     bins = [(0.0, 0.3), (0.3, 0.45), (0.45, 0.55), (0.55, 0.7), (0.7, 1.01)]
@@ -192,10 +247,19 @@ def main():
 
     out = REPORTS_DIR / "undercut_backtest.json"
     out.write_text(json.dumps(report, indent=2))
-    print(f"Brier(model)={report['brier_model']:.4f} vs "
-          f"baseline={report['brier_baseline']:.4f}")
-    print(f"LogLoss(model)={report['log_loss_model']:.4f} vs "
-          f"baseline={report['log_loss_baseline']:.4f}")
+    print(f"\nPRIMARY (all pairs, n={all_block['n']}):")
+    print(f"Brier(model)={all_block['brier_model']:.4f} vs "
+          f"baseline={all_block['brier_baseline']:.4f} vs "
+          f"kind-baseline={all_block['brier_kind_baseline']:.4f}")
+    print(f"LogLoss(model)={all_block['log_loss_model']:.4f} vs "
+          f"baseline={all_block['log_loss_baseline']:.4f}")
+    if att_block:
+        print(f"Subset is_attempt (n={att_block['n']}): "
+              f"Brier(model)={att_block['brier_model']:.4f} vs "
+              f"baseline={att_block['brier_baseline']:.4f}")
+    print(f"P(attempt): Brier={attempt_report['brier_model']:.4f} vs "
+          f"baseline={attempt_report['brier_baseline']:.4f}, "
+          f"AUC={attempt_report['roc_auc']:.3f}")
     print(f"Wrote {out} ({time.time()-t0:.0f}s)")
 
 
