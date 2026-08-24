@@ -94,17 +94,24 @@ with tab_race:
             show = pd.concat([show, dnf[["position", "driver", "team",
                                          "grid_position", "status", "points"]]
                               .assign(position="DNF")], ignore_index=True)
-        st.dataframe(show, use_container_width=True, height=500)
+        st.dataframe(show, width="stretch", height=500)
 
     # Position-vs-lap trace for top finishers
     if not sel_laps.empty:
         st.subheader("Position by lap (top 10 finishers)")
         top10 = finished.head(10)["driver"].tolist() if not sel_results.empty else []
-        pl = sel_laps[sel_laps["driver"].isin(top10) & sel_laps["position"].notna()]
+        pl = sel_laps[sel_laps["driver"].isin(top10)].copy()
+        # position can contain non-numeric markers (e.g. "DNF") upstream of
+        # this table; coerce to numeric and drop what doesn't survive that
+        # (this also subsumes the old .notna() filter, since coercion turns
+        # both real NaNs and non-numeric strings into NaN uniformly).
+        pl["position"] = pd.to_numeric(pl["position"], errors="coerce")
+        pl = pl[pl["position"].notna()]
         fig = px.line(pl, x="lap_number", y="position", color="driver",
-                      category_orders={"driver": top10}, yaxis=dict(autorange="reversed"))
+                      category_orders={"driver": top10})
+        fig.update_yaxes(autorange="reversed")
         fig.update_layout(height=420, yaxis_title="Position", xaxis_title="Lap")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
 # --------------------------------------------------------- tire degradation --
 with tab_tires:
@@ -124,7 +131,7 @@ with tab_tires:
         fig = go.Figure()
         fig.add_scatter(x=curve["tire_life"], y=curve["mean_delta"],
                         mode="lines+markers", name=f"{compound} mean delta",
-                        line=dict(color=COMPOUNDS_COLORS.get(compound, "#888")))
+                        line=dict(color=COMPOUND_COLORS.get(compound, "#888")))
         xs = np.linspace(curve["tire_life"].min(), curve["tire_life"].max(), 50)
         if np.isfinite(slope):
             fig.add_scatter(x=xs, y=slope * xs + intercept, mode="lines",
@@ -132,7 +139,7 @@ with tab_tires:
         fig.update_layout(xaxis_title="Tire age (laps)",
                           yaxis_title="Δ vs driver median clean lap (s)",
                           height=420)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
     # All-compound stint scatter for the selected race
     gf = degradation.green_flag_laps(sel_laps)
@@ -145,7 +152,7 @@ with tab_tires:
                                   "delta": "Δ vs median (s)"},
                           opacity=0.55, hover_data=["driver"])
         fig2.update_layout(height=420)
-        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig2, width="stretch")
 
 # --------------------------------------------------------------- pit stops --
 with tab_pits:
@@ -167,7 +174,7 @@ with tab_pits:
                             ])
         fig.update_layout(height=max(360, 22 * tl["driver"].nunique()),
                           xaxis_title="Lap", yaxis_title="")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
         stats = pitstops.pit_loss_stats(laps, pits)
         per_race_loss = stats.get("per_race", {}).get((year, round_))
@@ -193,19 +200,19 @@ with tab_undercut:
         st.info("No adjacent-car stop sequences detected yet.")
     else:
         summary = undercut_history.summarize_attempts(att)
-        st.dataframe(summary, use_container_width=True)
+        st.dataframe(summary, width="stretch")
         st.caption("Success = attacker ahead of the rival once both have pitted. "
                    "Counts shown alongside rates (no cherry-picking).")
 
         sel = att[(att["year"] == year) & (att["round"] == round_)]
         st.subheader(f"This race ({len(sel)} attempts)")
         if not sel.empty:
-            st.dataframe(sel, use_container_width=True)
+            st.dataframe(sel, width="stretch")
 
         fig = px.histogram(att, x="gap_at_attempt_s", color="kind", nbins=40,
                            barmode="overlay", opacity=0.6,
                            labels={"gap_at_attempt_s": "Gap at attempt (s)"})
         fig.update_layout(height=380)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
 st.sidebar.caption(f"Laps loaded: {len(laps):,} across {len(races)} races")
