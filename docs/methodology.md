@@ -66,14 +66,39 @@ outcomes. Two causes diagnosed:
    overcut 2%), so gap-at-attempt carries almost no signal within the
    selected band.
 
-**Status: the Stage 4 calculator does NOT beat naive baselines and this is
-stated everywhere its numbers appear.** Planned fixes (DECISIONS.md D22):
-per-stint reference-lap target for degradation; separate P(attempt) from
-P(success|attempt); evaluate on all adjacent-stop pairs rather than
-"attempts". Until then, treat undercut probabilities as unvalidated.
+**D22 fixes implemented (this session) and re-evaluated — still negative,
+reported in full.**
 
-Full record: `reports/undercut_backtest.json` (includes calibration buckets
-and every per-attempt prediction).
+- Fix 1 (per-stint reference target): `build_training_frame` now targets the
+  delta vs the median fuel-adjusted clean lap over the first 3 tire-life
+  laps of the SAME stint. Verified probe (`scripts/verify_d22_target.py`):
+  predicted P50 delta at tire age 2 moved from −1.759 s to +0.751 s; the age
+  curve now rises to a ~+1.4 s plateau instead of collapsing below zero.
+  Cost: 21,366/93,610 clean laps lack a stint reference and are dropped.
+- Fix 2 (separate models): `strategy/attempt_model.py` learns
+  P(responder follows ≤2 laps | gap, ages, compound) and
+  `undercut_history.find_adjacent_pairs` generates ALL adjacent-stop pairs
+  canonically (one record per event). Real-data holdout: the attempt model
+  has essentially no signal (ROC-AUC 0.532, Brier ≈ base rate) — reported,
+  not hidden.
+- Fix 3 (all-pairs evaluation): `scripts/backtest_undercut.py` now scores
+  every adjacent-stop pair (n=1852, seasons 2022+, temporal protocol).
+  Removing selection bias works as designed — first-pitter retention base
+  rate falls from ~96 % (selected attempts) to ~15 % (all pairs) — but the
+  calculator STILL does not beat naive baselines:
+  **Brier(model) = 0.5005 vs constant-baseline 0.1383 and kind-baseline
+  0.1256; LogLoss(model) = 4.36**, i.e. p_flip clusters at extremes while
+  outcomes sit near 15 %.
+
+**Status: the Stage 4 calculator does NOT beat naive baselines after the D22
+fixes either; this is stated everywhere its numbers appear.** The D22
+mechanics (target fix, model separation, debiased evaluation) are now in
+place and measured correctly; the remaining defect is the calculator's own
+probability calibration/orientation, which is the next diagnosed work item.
+Until that lands, treat undercut probabilities as unvalidated.
+
+Full record: `reports/undercut_backtest.json` (legacy numbers embedded for
+comparison, calibration buckets, per-pair predictions).
 
 ## 4. Monte Carlo simulator (Stage 5)
 
