@@ -108,7 +108,43 @@ def test_undercut_unfavored_when_gap_large():
     assert call.p_flip < 0.2
 
 
-# --------------------------------------------------------- tire cliff -----
+# ------------------------------------------------- adjacent-stop pairs -----
+def _mini_race():
+    """Synthetic 4-car race: pace order A>B>C>D, stops at laps 8/9/10/14."""
+    rows = []
+    pace = {"A": 80.0, "B": 80.5, "C": 81.0, "D": 81.5}
+    for d, t in pace.items():
+        for lap in range(1, 21):
+            rows.append({"year": 2024, "round": 1, "driver": d,
+                         "lap_number": lap, "lap_time_s": t})
+    return pd.DataFrame(rows)
+
+
+def test_find_adjacent_pairs_windows_and_labels():
+    from pitgenius.analysis.undercut_history import find_adjacent_pairs
+    laps = _mini_race()
+    pits = pd.DataFrame({
+        "year": [2024] * 4, "round": [1] * 4,
+        "driver": ["C", "D", "A", "B"],
+        "lap": [8, 9, 10, 14],
+    })
+    pairs = find_adjacent_pairs(laps, pits)
+    # Exactly two canonical events: C->D (1 lap apart) and A->B (4 apart).
+    assert len(pairs) == 2
+    cd = pairs[(pairs["attacker"] == "C") & (pairs["defender"] == "D")]
+    ab = pairs[(pairs["attacker"] == "A") & (pairs["defender"] == "B")]
+    assert len(cd) == 1 and len(ab) == 1
+    # Responder behind -> 'undercut'; success = first pitter retains lead.
+    assert bool(cd.iloc[0]["is_attempt"]) is True
+    assert cd.iloc[0]["kind"] == "undercut" and bool(cd.iloc[0]["success"])
+    assert bool(ab.iloc[0]["is_attempt"]) is False
+    assert ab.iloc[0]["kind"] == "undercut" and bool(ab.iloc[0]["success"])
+    # No double-counting: the reversed orientation must not exist.
+    assert not ((pairs["attacker"] == "D") &
+                (pairs["defender"] == "C")).any()
+
+
+
 def test_cliff_detected_on_synthetic_stint():
     rng = np.random.default_rng(0)
     age = np.arange(1, 26)

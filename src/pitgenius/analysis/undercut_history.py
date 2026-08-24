@@ -13,6 +13,8 @@ ahead of B once both have completed their stops.
 """
 from __future__ import annotations
 
+import sys
+
 import numpy as np
 import pandas as pd
 
@@ -108,6 +110,96 @@ def find_attempts(laps: pd.DataFrame, pits: pd.DataFrame,
                         "settled_gap_s": gap_s,
                     })
     return pd.DataFrame(attempts)
+
+
+def find_adjacent_pairs(laps: pd.DataFrame, pits: pd.DataFrame,
+                        attempt_window: int = 2,
+                        pair_window: int = 5,
+                        progress: bool = False) -> pd.DataFrame:
+    """ALL adjacent running-order pairs whose stops fall within `pair_window`
+    laps of each other — not just detected attempts (DECISIONS.md D22 fixes
+    2+3: removes selection bias from both modeling and evaluation).
+
+    Canonicalisation (each physical two-car stop event appears exactly ONCE):
+        attacker = the car that pitted FIRST
+        defender = its direct running-order neighbour at the snapshot before
+                   the first stop
+        kind     = 'undercut' if the responder was the car BEHIND (it
+                   followed the first pitter), else 'overcut'
+        success  = attacker still ahead of defender one lap after BOTH
+                   completed their stops (same outcome rule as find_attempts)
+        is_attempt = the pair ALSO matches the original find_attempts
+                   definition (response within `attempt_window` laps)
+
+    The `is_attempt` column is the training label for the separate
+    P(attempt) model; scoring the calculator on every pair (not just
+    is_attempt==True) is the debiased evaluation.
+    """
+    rows = []
+    races = pits.groupby(["year", "round"])
+    for i_race, ((year, round_), rp) in enumerate(races):
+        if progress:
+            print(f"[find_adjacent_pairs] race {i_race + 1}: "
+                  f"{year} r{round_} ({len(rows)} pairs so far)",
+                  file=sys.stderr, flush=True)
+        lp = laps[(laps["year"] == year) & (laps["round"] == round_)]
+        if lp.empty:
+            continue
+        stops = {
+            d: sorted(g.dropna(subset=["lap"])["lap"].astype(int).tolist())
+            for d, g in rp.groupby("driver")
+        }
+        seen: set[frozenset] = set()
+        for d_a, ls in stops.items():
+            for lap_a in ls:
+                for nb, ls_b in stops.items():
+                    if nb == d_a:
+                        continue
+                    for lb in ls_b:
+                        if lb == lap_a or abs(lb - lap_a) > pair_window:
+                            continue
+                        key = frozenset({(d_a, lap_a), (nb, lb)})
+                        if key in seen:
+                            continue
+
+                        first_d, first_l, resp_d, resp_l = (
+                            (d_a, lap_a, nb, lb) if lap_a < lb
+                            else (nb, lb, d_a, lap_a))
+
+                        snap = _position_after_lap(lp, year, round_,
+                                                   first_l - 1)
+                        if first_d not in snap or resp_d not in snap:
+                            continue
+                        order = sorted(snap.items(), key=lambda kv: kv[1])
+                        names = [n for n, _ in order]
+                        if (abs(names.index(first_d)
+                                - names.index(resp_d)) != 1):
+                            continue  # must be DIRECT neighbours, as before
+
+                        settle = max(first_l, resp_l) + 1
+                        snap_after = _position_after_lap(lp, year, round_,
+                                                         settle)
+                        if first_d not in snap_after or resp_d not in snap_after:
+                            continue
+
+                        resp_behind = snap[resp_d] > snap[first_d]
+                        rows.append({
+                            "year": year, "round": round_,
+                            "kind": "undercut" if resp_behind else "overcut",
+                            "attacker": first_d, "defender": resp_d,
+                            "attacker_pit_lap": first_l,
+                            "defender_pit_lap": resp_l,
+                            "gap_at_attempt_s": abs(
+                                snap[resp_d] - snap[first_d]),
+                            "success": bool(
+                                snap_after[first_d] < snap_after[resp_d]),
+                            "settled_gap_s": abs(
+                                snap_after[resp_d] - snap_after[first_d]),
+                            "is_attempt": bool(
+                                (resp_l - first_l) <= attempt_window),
+                        })
+                        seen.add(key)
+    return pd.DataFrame(rows)
 
 
 def summarize_attempts(attempts: pd.DataFrame) -> pd.DataFrame:
