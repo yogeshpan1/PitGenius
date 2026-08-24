@@ -20,6 +20,7 @@ from pitgenius.config import REPORTS_DIR
 from pitgenius.data import store
 from pitgenius.models.degradation_model import (
     TireDegradationModel, build_training_frame)
+from pitgenius.models.pace_model import RollingPaceModel
 
 FIRST_TEST_YEAR = 2023
 
@@ -35,6 +36,7 @@ def main():
         conn.close()
 
     data = build_training_frame(laps)
+    rpm = RollingPaceModel(laps)   # built once; reused for every race
     races = sorted({(int(y), int(r)) for y, r in
                     laps.groupby(["year", "round"]).groups.keys()})
 
@@ -46,10 +48,12 @@ def main():
             continue
         if year != current_year:
             train = data[data["year"] < year]
-            print(f"training model for {year} on {len(train)} rows ...")
+            print(f"training model for {year} on {len(train)} rows ...",
+                  flush=True)
             model = TireDegradationModel().fit(train)
             current_year = year
-        out = backtest_race(model, laps, pits, results, year, round_)
+        out = backtest_race(model, laps, pits, results, year, round_,
+                            rpm=rpm)
         if out:
             rows.append(out)
             mark = "HIT " if out["winner_strategy_matched"] else "MISS"

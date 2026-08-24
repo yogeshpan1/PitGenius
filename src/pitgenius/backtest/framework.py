@@ -18,6 +18,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
+from pitgenius.models.pace_model import RollingPaceModel
 from pitgenius.models.safety_car import circuit_rates
 from pitgenius.strategy.simulator import MonteCarloSimulator, Strategy
 
@@ -57,7 +58,8 @@ def candidate_strategies(total_laps: int) -> list[Strategy]:
 
 
 def backtest_race(model, laps, pits, results, year, round_,
-                  iterations: int = 300) -> dict | None:
+                  iterations: int = 300,
+                  rpm: RollingPaceModel | None = None) -> dict | None:
     race_laps = laps[(laps["year"] == year) & (laps["round"] == round_)]
     if race_laps.empty:
         return None
@@ -83,7 +85,31 @@ def backtest_race(model, laps, pits, results, year, round_,
     if w_strategy.stops:
         cands.append(w_strategy)
 
-    sim = MonteCarloSimulator(model, sc_rate, mean_period)
+    # D23 part 3: real PRE-RACE pace offsets per car (no leakage -
+    # RollingPaceModel uses only strictly-prior races). Candidate-strategy
+    # focal cars get the field-median offset so STRATEGY is what differs
+    # between them; the winner_actual focal car gets the actual winner's
+    # offset; field cars get their own offsets (median fallback for drivers
+    # without history). SIGN: pace_model offsets are positive=faster, the
+    # simulator ADDS its pace term to lap time, so negate on the way in.
+    if rpm is None:
+        rpm = RollingPaceModel(laps)
+    offs = rpm.offsets_before(year, round_)
+    known = np.array(list(offs.values())) if offs else np.array([0.0])
+    med_pace = float(np.median(known))
+    winner_pace = float(offs.get(winner, med_pace))
+    fin_all = results[(results["year"] == year)
+                      & (results["round"] == round_)].dropna(subset=["position"])
+    others = [d for d in fin_all.sort_values("position")["driver"]
+              if d != winner][:19]
+    field_pace = [-float(offs.get(d, med_pace)) for d in others]
+    # cands[-1] is always winner_actual (appended above), so the LAST focal
+    # slot carries the winner's pace term; other focals stay field-median.
+    focal_pace = [-med_pace] * (len(cands) - 1) + [-winner_pace]
+    pace_offsets = focal_pace + field_pace + [-med_pace] * 19
+
+    sim = MonteCarloSimulator(model, sc_rate, mean_period,
+                              pace_offsets=pace_offsets)
     sims = sim.run(cands, total_laps, base_lap, iterations=iterations)
 
     best = max(sims, key=lambda r: r.expected_points)

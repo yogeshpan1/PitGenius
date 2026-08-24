@@ -62,7 +62,15 @@ class MonteCarloSimulator:
         n_field_cars: int = 19,
         field_pace_sd_s: float = 0.9,
         seed: int = 42,
+        pace_offsets: list[float] | None = None,
     ):
+        """pace_offsets (D23 part 3): optional per-car pace term ADDED TO LAP
+        TIME (positive = SLOWER than field), ordered like `strategies` then
+        field cars. Callers holding pace_model offsets (positive = faster)
+        must negate them. When provided, cars keep their REAL relative pace
+        every iteration instead of iid N(0, field_pace_sd) draws - this is
+        what lets the simulator place a dominant car near the front for a
+        reason."""
         self.model = deg_model
         self.sc_rate = sc_rate_per_race
         self.mean_sc_period = mean_sc_period_laps
@@ -71,6 +79,9 @@ class MonteCarloSimulator:
         self.n_field = n_field_cars
         self.field_pace_sd = field_pace_sd_s
         self.seed = seed
+        self.pace_offsets = (
+            np.asarray(pace_offsets, dtype=float)
+            if pace_offsets is not None else None)
 
     # ------------------------------------------------------------- helpers
     def _quantile_tables(self, max_age: int) -> dict[str, tuple]:
@@ -135,7 +146,15 @@ class MonteCarloSimulator:
                 sc_mask[start:min(start + length, total_laps)] = True
 
             # --- pace offsets ----------------------------------------------
-            pace = rng.normal(0.0, self.field_pace_sd, n_cars)
+            # D23 part 3: real pre-race offsets when provided (car dominance);
+            # otherwise fall back to the old iid random draw.
+            if self.pace_offsets is not None:
+                pace = self.pace_offsets[:n_cars]
+                if len(pace) < n_cars:
+                    pace = np.concatenate(
+                        [pace, np.zeros(n_cars - len(pace))])
+            else:
+                pace = rng.normal(0.0, self.field_pace_sd, n_cars)
 
             # --- state ------------------------------------------------------
             compounds = np.array(
