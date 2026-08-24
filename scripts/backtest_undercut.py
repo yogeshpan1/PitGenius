@@ -37,6 +37,7 @@ from pitgenius.models.degradation_model import (
     TireDegradationModel,
     build_training_frame,
 )
+from pitgenius.models.pace_model import RollingPaceModel
 from pitgenius.strategy import undercut_calc
 from pitgenius.strategy.attempt_model import AttemptModel
 
@@ -45,12 +46,22 @@ FIRST_TEST_YEAR = 2022
 
 def _cal_features(p_raw: np.ndarray, gap: pd.Series,
                   kind: pd.Series,
-                  response_laps: pd.Series | None = None) -> np.ndarray:
-    """Calibration-layer features: raw physics output, capped log-gap
-    (the cumulative-time proxy has outliers up to ~200 s), kind, and the
-    response window length - all known before the outcome."""
+                  response_laps: pd.Series | None = None,
+                  pace_a: pd.Series | None = None,
+                  pace_d: pd.Series | None = None) -> np.ndarray:
+    """Calibration-layer features - all known before the outcome:
+    raw physics output, capped log-gap (the cumulative-time proxy has
+    outliers up to ~200 s), kind, response window length, and BOTH cars'
+    PRE-RACE rolling pace offsets (D23 part 2). Missing pace -> 0."""
     if response_laps is None:
         response_laps = pd.Series(1, index=np.arange(len(p_raw)))
+    n = len(p_raw)
+
+    def _pace(col):
+        if col is None:
+            return np.zeros(n)
+        return pd.to_numeric(col, errors="coerce").fillna(0.0).to_numpy()
+
     return np.column_stack([
         np.asarray(p_raw, dtype=float),
         np.log1p(np.clip(pd.to_numeric(gap, errors="coerce").fillna(0),
@@ -58,6 +69,8 @@ def _cal_features(p_raw: np.ndarray, gap: pd.Series,
         (pd.Series(kind).values == "overcut").astype(float),
         np.clip(pd.to_numeric(response_laps, errors="coerce").fillna(1),
                 1, 5).values,
+        _pace(pace_a),
+        _pace(pace_d),
     ])
 
 
@@ -74,6 +87,11 @@ LEGACY = {
     "v3_all_pairs_before_orientation_fix": {
         "brier_model": 0.5005, "brier_baseline": 0.1383,
         "log_loss_model": 4.3626,
+    },
+    "v4_v5_orientation_fix_plus_calibration_no_pace": {
+        "brier_model": 0.1295, "brier_baseline": 0.1383,
+        "brier_kind_baseline_reported": 0.1256,  # fitted on test season
+        "log_loss_model": 0.4115,
     },
 }
 
@@ -169,7 +187,21 @@ def main():
 
     feats = attempt_features(laps, pairs)
     feats = feats.dropna(subset=["attacker_age", "defender_age"])
-    print(f"PairsWithTireData: {len(feats)}")
+    # D23 part 2: attach PRE-RACE rolling pace offsets (no leakage -
+    # offsets_before uses only strictly-prior races).
+    rpm = RollingPaceModel(laps)
+    race_off = {key: rpm.offsets_before(int(key[0]), int(key[1]))
+                for key, _ in feats.groupby(["year", "round"])}
+    feats["attacker_pace"] = [
+        race_off[(int(a["year"]), int(a["round"]))].get(a["attacker"])
+        for _, a in feats.iterrows()]
+    feats["defender_pace"] = [
+        race_off[(int(a["year"]), int(a["round"]))].get(a["defender"])
+        for _, a in feats.iterrows()]
+    n_pace = int(feats[["attacker_pace", "defender_pace"]]
+                 .notna().all(axis=1).sum())
+    print(f"PairsWithTireData: {len(feats)} "
+          f"(both pace offsets known: {n_pace})")
 
     data_all = build_training_frame(laps)
 
@@ -215,12 +247,15 @@ def main():
         Xtr = _cal_features(raw_all[tr_pos],
                             feats.iloc[tr_pos]["gap_at_attempt_s"],
                             feats.iloc[tr_pos]["kind"],
-                            feats.iloc[tr_pos]["response_laps"])
+                            feats.iloc[tr_pos]["response_laps"],
+                            feats.iloc[tr_pos]["attacker_pace"],
+                            feats.iloc[tr_pos]["defender_pace"])
         ytr = feats.iloc[tr_pos]["success"].astype(int).to_numpy()
         calibrator = LogisticRegression(max_iter=2000).fit(Xtr, ytr)
         p_cal_test = calibrator.predict_proba(
             _cal_features(raw_all[te_pos], test["gap_at_attempt_s"],
-                          test["kind"], test["response_laps"]))[:, 1]
+                          test["kind"], test["response_laps"],
+                          test["attacker_pace"], test["defender_pace"]))[:, 1]
 
         for j, (_, a) in enumerate(test.iterrows()):
             rows.append({
