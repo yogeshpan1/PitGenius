@@ -92,20 +92,35 @@ class FakeModel:
             p10=p50 - 0.2, p50=p50, p90=p50 + 0.2)
 
 
-def test_undercut_favored_when_gap_small():
-    call = undercut_calc.evaluate_move(
-        FakeModel(), kind="undercut", gap_s=1.0,
+def _move(gap_s, **kw):
+    kw.setdefault("response_laps", 1)
+    return undercut_calc.evaluate_move(
+        FakeModel(), kind="undercut", gap_s=gap_s,
         attacker_compound="MEDIUM", attacker_age=12,
-        defender_compound="MEDIUM", defender_age=13, circuit="t")
-    assert call.p_flip > 0.8
+        defender_compound="MEDIUM", defender_age=13,
+        circuit="t", **kw)
 
 
-def test_undercut_unfavored_when_gap_large():
-    call = undercut_calc.evaluate_move(
-        FakeModel(), kind="undercut", gap_s=25.0,
-        attacker_compound="MEDIUM", attacker_age=12,
-        defender_compound="MEDIUM", defender_age=13, circuit="t")
-    assert call.p_flip < 0.2
+def test_retention_favored_when_lead_small():
+    # Leading by 1s with fresher tires: first pitter should RETAIN.
+    call = _move(1.0)
+    assert call.p_success > 0.8
+
+
+def test_retention_unfavored_when_deficit_large():
+    # Trailing by 25s (negative margin): retention should be near-impossible.
+    call = _move(-25.0)
+    assert call.p_success < 0.2
+
+
+def test_longer_response_window_helps_first_pitter():
+    # The longer the responder stays out on old tires, the more the first
+    # pitter's fresh-tire advantage accumulates.
+    k1 = _move(1.0, response_laps=1)
+    k4 = _move(1.0, response_laps=4)
+    assert k4.p_success > k1.p_success
+    assert k4.expected_swing_s > k1.expected_swing_s
+
 
 
 # ------------------------------------------------- adjacent-stop pairs -----

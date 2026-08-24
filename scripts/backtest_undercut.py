@@ -27,6 +27,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import numpy as np
 import pandas as pd
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score
 
 from pitgenius.analysis import undercut_history
@@ -41,11 +42,39 @@ from pitgenius.strategy.attempt_model import AttemptModel
 
 FIRST_TEST_YEAR = 2022
 
-# Reference points from the pre-fix protocol (reports history, kept for
-# honest before/after comparison; both scored on DETECTED ATTEMPTS ONLY):
+
+def _cal_features(p_raw: np.ndarray, gap: pd.Series,
+                  kind: pd.Series,
+                  response_laps: pd.Series | None = None) -> np.ndarray:
+    """Calibration-layer features: raw physics output, capped log-gap
+    (the cumulative-time proxy has outliers up to ~200 s), kind, and the
+    response window length - all known before the outcome."""
+    if response_laps is None:
+        response_laps = pd.Series(1, index=np.arange(len(p_raw)))
+    return np.column_stack([
+        np.asarray(p_raw, dtype=float),
+        np.log1p(np.clip(pd.to_numeric(gap, errors="coerce").fillna(0),
+                         0, 60)),
+        (pd.Series(kind).values == "overcut").astype(float),
+        np.clip(pd.to_numeric(response_laps, errors="coerce").fillna(1),
+                1, 5).values,
+    ])
+
+
+# Reference points from earlier protocols (kept for honest before/after
+# comparison). v1/v2 scored DETECTED ATTEMPTS ONLY; v3 introduced the
+# all-pairs protocol but still had the inverted/miscalibrated p_flip.
 LEGACY = {
-    "v1_race_median_target": {"brier_model": 0.7141, "brier_baseline": 0.2480},
-    "v2_per_stint_target": {"brier_model": 0.7590, "brier_baseline": 0.2480},
+    "v1_v2_detected_attempts_only": {
+        "v1_race_median_target": {"brier_model": 0.7141,
+                                  "brier_baseline": 0.2480},
+        "v2_per_stint_target": {"brier_model": 0.7590,
+                                "brier_baseline": 0.2480},
+    },
+    "v3_all_pairs_before_orientation_fix": {
+        "brier_model": 0.5005, "brier_baseline": 0.1383,
+        "log_loss_model": 4.3626,
+    },
 }
 
 
@@ -86,6 +115,8 @@ def attempt_features(laps: pd.DataFrame, att: pd.DataFrame) -> pd.DataFrame:
             "attacker_age": ar["tire_life"],
             "defender_compound": dr["tire_compound"],
             "defender_age": dr["tire_life"],
+            "response_laps": int(a["defender_pit_lap"]
+                                 - a["attacker_pit_lap"]),
             # gap convention in calc: +ve = rival leads (unchanged from the
             # legacy protocol, so before/after numbers stay comparable).
             "signed_gap_s": a["gap_at_attempt_s"]
@@ -154,7 +185,13 @@ def main():
         deg_model = TireDegradationModel().fit(train_deg)
         att_model = AttemptModel().fit(train_att)
 
-        for _, a in test.iterrows():
+        # Raw physics score for EVERY pair under this season's model. Scores
+        # for prior seasons are (out-of-sample) inputs to the calibration
+        # layer; nothing from season Y touches either model.
+        pos_of = {idx: i for i, idx in enumerate(feats.index)}
+        raw_all = np.empty(len(feats), dtype=float)
+        p_att_all = np.empty(len(feats), dtype=float)
+        for idx, a in feats.iterrows():
             call = undercut_calc.evaluate_move(
                 deg_model,
                 kind=a["kind"],
@@ -164,12 +201,33 @@ def main():
                 defender_compound=a["defender_compound"],
                 defender_age=int(a["defender_age"]),
                 circuit=f"{int(a['round'])}_{int(a['year'])}",
+                response_laps=int(a["defender_pit_lap"]
+                                  - a["attacker_pit_lap"]),
             )
+            raw_all[pos_of[idx]] = call.p_success
+            p_att_all[pos_of[idx]] = float(att_model.predict_proba(
+                pd.DataFrame([a]))[0])
+
+        # Temporal calibration layer: logistic on prior-season pairs only.
+        tr_pos = np.array([i for i, idx in enumerate(feats.index)
+                           if feats.at[idx, "year"] < year])
+        te_pos = np.array([pos_of[idx] for idx in test.index])
+        Xtr = _cal_features(raw_all[tr_pos],
+                            feats.iloc[tr_pos]["gap_at_attempt_s"],
+                            feats.iloc[tr_pos]["kind"],
+                            feats.iloc[tr_pos]["response_laps"])
+        ytr = feats.iloc[tr_pos]["success"].astype(int).to_numpy()
+        calibrator = LogisticRegression(max_iter=2000).fit(Xtr, ytr)
+        p_cal_test = calibrator.predict_proba(
+            _cal_features(raw_all[te_pos], test["gap_at_attempt_s"],
+                          test["kind"], test["response_laps"]))[:, 1]
+
+        for j, (_, a) in enumerate(test.iterrows()):
             rows.append({
                 "year": a["year"], "round": a["round"], "kind": a["kind"],
-                "p_predicted": call.p_flip,
-                "p_attempt": float(att_model.predict_proba(
-                    pd.DataFrame([a]))[0]),
+                "p_predicted": float(p_cal_test[j]),
+                "p_raw_physics": float(raw_all[te_pos[j]]),
+                "p_attempt": float(p_att_all[te_pos[j]]),
                 "is_attempt": bool(a["is_attempt"]),
                 "success": int(bool(a["success"])),
                 "gap_at_attempt_s": a["gap_at_attempt_s"],
@@ -183,6 +241,9 @@ def main():
     all_block = _block(res)
     att_only = res[res["is_attempt"]]
     att_block = _block(att_only) if len(att_only) else {}
+    # Raw (uncalibrated) physics output, for transparency:
+    raw_res = res.assign(p_predicted=res["p_raw_physics"])
+    raw_block = _block(raw_res)
 
     # --- P(attempt) model quality (temporal holdout seasons pooled) --------
     p_att = res["p_attempt"].to_numpy()
@@ -200,7 +261,6 @@ def main():
         "roc_auc": float(roc_auc_score(y_att, p_att)),
     }
 
-    better = all_block["brier_model"] < all_block["brier_baseline"]
     report = {
         "protocol": (
             "Temporal: degradation model AND P(attempt) model trained only "
@@ -210,19 +270,25 @@ def main():
             "subset. This removes the D22 selection bias from evaluation."),
         "legacy_reference_detected_attempts_only": LEGACY,
         "primary_all_pairs": all_block,
+        "raw_physics_before_calibration": raw_block,
         "subset_is_attempt": att_block,
         "attempt_model": attempt_report,
         "honest_finding": (
-            "PRIMARY evaluation now scores every adjacent-stop pair, not "
-            "just self-selected attempts. Result: Brier(model)"
-            f"={all_block['brier_model']:.4f} vs constant baseline "
-            f"{all_block['brier_baseline']:.4f} -> "
-            + ("the calculator BEATS the constant baseline on all pairs."
-               if better else
-               "the calculator STILL DOES NOT beat the constant baseline.")
-            + " P(success|attempt) and P(attempt) are modeled separately; "
-              "their product is P(response AND flip), never reported as a "
-              "success probability for non-attempted pairs."),
+            "D22 fix 4 corrected the inverted orientation (v1-v3 returned "
+            "P(first pitter LOSES) but scored against retention labels; "
+            "audit showed corr=-0.328) and added multi-lap physics + a "
+            "temporally-fitted calibration layer (logistic on prior-season "
+            "pairs only). Result on all pairs: Brier(calibrated)="
+            f"{all_block['brier_model']:.4f} vs raw physics "
+            f"{raw_block['brier_model']:.4f} vs constant baseline "
+            f"{all_block['brier_baseline']:.4f} and kind-baseline "
+            f"{all_block['brier_kind_baseline']:.4f} -> "
+            + ("the calculator now BEATS both baselines." if
+               all_block["brier_model"] < min(all_block["brier_baseline"],
+                                              all_block["brier_kind_baseline"])
+               else "the calculator STILL does not beat the baselines.")
+            + " P(attempt) remains modeled separately (AUC "
+              f"{attempt_report['roc_auc']:.3f})."),
         "calibration": [],
         "by_kind": {},
         "per_pair": res.to_dict(orient="records"),
@@ -248,7 +314,8 @@ def main():
     out = REPORTS_DIR / "undercut_backtest.json"
     out.write_text(json.dumps(report, indent=2))
     print(f"\nPRIMARY (all pairs, n={all_block['n']}):")
-    print(f"Brier(model)={all_block['brier_model']:.4f} vs "
+    print(f"Brier(calibrated)={all_block['brier_model']:.4f} vs "
+          f"raw-physics={raw_block['brier_model']:.4f} vs "
           f"baseline={all_block['brier_baseline']:.4f} vs "
           f"kind-baseline={all_block['brier_kind_baseline']:.4f}")
     print(f"LogLoss(model)={all_block['log_loss_model']:.4f} vs "
