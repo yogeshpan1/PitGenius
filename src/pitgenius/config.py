@@ -25,7 +25,7 @@ RACE_SESSION_CODE = "R"
 # --- LLM explainability (Stage 8) ----------------------------------------
 LLM_API_KEY = os.environ.get("LLM_API_KEY", "")
 LLM_BASE_URL = os.environ.get("LLM_BASE_URL", "https://api.groq.com/openai/v1")
-LLM_MODEL = os.environ.get("LLM_MODEL", "llama-3.3-70b-versatile")
+LLM_MODEL = os.environ.get("LLM_MODEL", "openai/gpt-oss-120b")
 
 # --- Monte Carlo defaults -------------------------------------------------
 MC_DEFAULT_ITERATIONS = 5000

@@ -15,7 +15,7 @@
 | Tire cliff detection | ✅ Built | Synthetic-stint unit tests (exact breakpoint recovery) |
 | Sim-racing bridge (ACC UDP parse, iRacing adapter, pit advice) | ✅ Built | Parser unit tests; live test pending (needs sim running) |
 | FastAPI backend + React frontend | ✅ Built | Manual run: `uvicorn src.pitgenius.api.main:app`; `cd frontend && npm i && npm run dev` |
-| Test suite | ✅ 14 passing | `pytest tests/ -q` |
+| Test suite | ✅ 15 passing | `pytest tests/ -q` |
 
 ## Stubbed — what YOU need to supply
 
@@ -23,7 +23,7 @@
    ```
    set LLM_API_KEY=gsk_...        (Groq)
    set LLM_BASE_URL=https://api.groq.com/openai/v1   (optional)
-   set LLM_MODEL=llama-3.3-70b-versatile             (optional)
+   set LLM_MODEL=openai/gpt-oss-120b                (optional; llama-3.3-70b-versatile is deprecated on Groq)
    ```
    Without it, `explain()` returns a marked `[STUB]` template.
 2. **AWS credentials** — follow `docs/deployment.md`. Config is written;
